@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "/73wuIY5xZYLT2MzQ5nZxj+M5Jlr0rSZM0Dpg+5cAbDUaUQfmYFvq7xMniv5hOlcnpd2WIt/v5OtY+lQi++vgw==",
+  "dgSpecHash": "xF4kbcIR610YCY5/bb+8ko77LTms0Aa+0rMD5A4WLmOawPBaECiVL5P5sKGB/28/jhAPGYb0c8YwNOcKsZkhwQ==",
   "success": true,
-  "projectFilePath": "D:\\Private\\ChatProgram\\ChatProgram\\ChatProgram\\ChatProgram.csproj",
+  "projectFilePath": "D:\\Private\\ChatProgram\\ChatProgram\\ChatProgram\\ServerProgram.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

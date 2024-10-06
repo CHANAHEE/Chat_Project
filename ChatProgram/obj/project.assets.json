@@ -13,9 +13,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Private\\ChatProgram\\ChatProgram\\ChatProgram\\ChatProgram.csproj",
-      "projectName": "ChatProgram",
-      "projectPath": "D:\\Private\\ChatProgram\\ChatProgram\\ChatProgram\\ChatProgram.csproj",
+      "projectUniqueName": "D:\\Private\\ChatProgram\\ChatProgram\\ChatProgram\\ServerProgram.csproj",
+      "projectName": "ServerProgram",
+      "projectPath": "D:\\Private\\ChatProgram\\ChatProgram\\ChatProgram\\ServerProgram.csproj",
       "packagesPath": "C:\\Users\\csg\\.nuget\\packages\\",
       "outputPath": "D:\\Private\\ChatProgram\\ChatProgram\\ChatProgram\\obj\\",
       "projectStyle": "PackageReference",
