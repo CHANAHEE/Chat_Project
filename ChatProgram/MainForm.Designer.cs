@@ -93,6 +93,7 @@
             Controls.Add(listView_Log);
             Name = "MainForm";
             Text = "Chatting Server";
+            FormClosed += MainForm_FormClosed;
             tableLayoutPanel1.ResumeLayout(false);
             ResumeLayout(false);
         }
