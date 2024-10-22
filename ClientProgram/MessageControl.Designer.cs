@@ -28,45 +28,45 @@
         /// </summary>
         private void InitializeComponent()
         {
-            label1 = new Label();
-            label2 = new Label();
+            label_Message = new Label();
+            label_SendTime = new Label();
             SuspendLayout();
             // 
-            // label1
+            // label_Message
             // 
-            label1.AutoSize = true;
-            label1.BackColor = Color.Gold;
-            label1.Dock = DockStyle.Right;
-            label1.Location = new Point(663, 0);
-            label1.MaximumSize = new Size(250, 0);
-            label1.Name = "label1";
-            label1.Padding = new Padding(10);
-            label1.Size = new Size(107, 35);
-            label1.TabIndex = 2;
-            label1.Text = "label1label1lab";
+            label_Message.AutoSize = true;
+            label_Message.BackColor = Color.Gold;
+            label_Message.Dock = DockStyle.Right;
+            label_Message.Location = new Point(663, 0);
+            label_Message.MaximumSize = new Size(250, 0);
+            label_Message.Name = "label_Message";
+            label_Message.Padding = new Padding(10);
+            label_Message.Size = new Size(107, 35);
+            label_Message.TabIndex = 2;
+            label_Message.Text = "label1label1lab";
             // 
-            // label2
+            // label_SendTime
             // 
-            label2.AutoSize = true;
-            label2.BackColor = Color.Transparent;
-            label2.Dock = DockStyle.Right;
-            label2.Font = new Font("맑은 고딕", 6F);
-            label2.ForeColor = SystemColors.ControlDarkDark;
-            label2.Location = new Point(601, 0);
-            label2.MaximumSize = new Size(250, 0);
-            label2.Name = "label2";
-            label2.Padding = new Padding(20, 20, 0, 0);
-            label2.Size = new Size(62, 31);
-            label2.TabIndex = 3;
-            label2.Text = "오후 10:30";
-            label2.TextAlign = ContentAlignment.BottomRight;
+            label_SendTime.AutoSize = true;
+            label_SendTime.BackColor = Color.Transparent;
+            label_SendTime.Dock = DockStyle.Right;
+            label_SendTime.Font = new Font("맑은 고딕", 6F);
+            label_SendTime.ForeColor = SystemColors.ControlDarkDark;
+            label_SendTime.Location = new Point(598, 0);
+            label_SendTime.MaximumSize = new Size(250, 0);
+            label_SendTime.Name = "label_SendTime";
+            label_SendTime.Padding = new Padding(20, 24, 3, 0);
+            label_SendTime.Size = new Size(65, 35);
+            label_SendTime.TabIndex = 3;
+            label_SendTime.Text = "오후 10:30";
+            label_SendTime.TextAlign = ContentAlignment.BottomRight;
             // 
             // MessageControl
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            Controls.Add(label2);
-            Controls.Add(label1);
+            Controls.Add(label_SendTime);
+            Controls.Add(label_Message);
             Name = "MessageControl";
             Size = new Size(770, 35);
             ResumeLayout(false);
@@ -74,7 +74,7 @@
         }
 
         #endregion
-        private Label label1;
-        private Label label2;
+        private Label label_Message;
+        private Label label_SendTime;
     }
 }

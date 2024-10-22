@@ -70,6 +70,7 @@
             richTextBox_Message.Size = new Size(719, 38);
             richTextBox_Message.TabIndex = 1;
             richTextBox_Message.Text = "";
+            richTextBox_Message.KeyDown += richTextBox_Message_KeyDown;
             // 
             // flowLayoutPanel_Message
             // 

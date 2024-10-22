@@ -19,7 +19,23 @@ namespace ClientProgram
         private void button_Send_Click(object sender, EventArgs e)
         {
             // 서버로 보내기
-            this.flowLayoutPanel_Message.Controls.Add(new MessageControl());
+            this.flowLayoutPanel_Message.Controls.Add(new MessageControl(this.richTextBox_Message.Text, DateTime.Now));
+
+            this.richTextBox_Message.Clear();
+        }
+
+        private void richTextBox_Message_KeyDown(object sender, KeyEventArgs e)
+        {
+            //if (e.KeyCode == Keys.Enter && e.Shift)
+            //{
+
+            //}
+            if(e.KeyCode == Keys.Enter) 
+            {
+                e.Handled = true;
+
+                this.button_Send.PerformClick();                
+            }
         }
     }
 }
