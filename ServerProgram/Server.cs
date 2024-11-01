@@ -11,7 +11,7 @@ namespace ServerProgram
     internal class Server
     {
         private int connectionCount;
-        Socket listenSocket;
+        Socket serverSocket;
 
         BufferManager bufferManager;
         const int opsToPreAlloc = 2;
@@ -19,7 +19,9 @@ namespace ServerProgram
         SocketAsyncEventArgsPool readWritePool;
         Semaphore maxNumberAcceptedClients;
 
-        public Server(int numConnections, int receiveBufferSize)
+        MainForm mainForm;
+
+        public Server(int numConnections, int receiveBufferSize, MainForm mainForm)
         {
             connectionCount = numConnections;
 
@@ -27,6 +29,8 @@ namespace ServerProgram
 
             readWritePool = new SocketAsyncEventArgsPool(numConnections);
             maxNumberAcceptedClients = new Semaphore(numConnections, numConnections);
+
+            this.mainForm = mainForm;
         }
 
         public void Init()
@@ -48,29 +52,37 @@ namespace ServerProgram
 
         public void Start(IPEndPoint localEndPoint)
         {
-            listenSocket = new Socket(localEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+            serverSocket = new Socket(localEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
             
-            listenSocket.Bind(localEndPoint);
-            listenSocket.Listen(100);
+            serverSocket.Bind(localEndPoint);
+            serverSocket.Listen(100);
 
             SocketAsyncEventArgs acceptEventArg = new SocketAsyncEventArgs();
             acceptEventArg.Completed += new EventHandler<SocketAsyncEventArgs>(AcceptEventArg_Completed);
+            acceptEventArg.
             StartAccept(acceptEventArg);
         }
 
         public void StartAccept(SocketAsyncEventArgs acceptEventArg)
         {
-            bool willRaiseEvent = false;
-            while (!willRaiseEvent)
+            try
             {
-                maxNumberAcceptedClients.WaitOne();
-
-                acceptEventArg.AcceptSocket = null;
-                willRaiseEvent = listenSocket.AcceptAsync(acceptEventArg);
-                if (!willRaiseEvent)
+                bool willRaiseEvent = false;
+                while (!willRaiseEvent)
                 {
-                    ProcessAccept(acceptEventArg);
+                    maxNumberAcceptedClients.WaitOne();
+
+                    acceptEventArg.AcceptSocket = null;
+                    willRaiseEvent = serverSocket.AcceptAsync(acceptEventArg);
+                    if (!willRaiseEvent)
+                    {
+                        ProcessAccept(acceptEventArg);
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
         }
 
@@ -92,7 +104,7 @@ namespace ServerProgram
             //    ProcessReceive(readEventArgs);
             //}
 
-            Console.WriteLine("Client is Connected!");
+            mainForm.Update_Message(DateTime.Now.ToString(), "Client is Connected!");
         }
 
         void IO_Completed(object sender, SocketAsyncEventArgs e)
@@ -186,7 +198,7 @@ namespace ServerProgram
                 maxNumberAcceptedClients.Release();                
             }
 
-            listenSocket.Close();
+            serverSocket.Close();
         }
     }
 }

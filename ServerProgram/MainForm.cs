@@ -11,6 +11,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Net.Sockets;
 using System.Net;
 using System.Diagnostics;
+using System.Reflection.Emit;
 
 namespace ServerProgram
 {
@@ -33,8 +34,27 @@ namespace ServerProgram
 
         private void Create_Server()
         {
-            server = new Server(1, 2048);
+            server = new Server(1, 2048, this);
             server.Init();
+        }
+
+        public void Update_Message(string Time, string Message) 
+        {
+            if (this.listView_Log.InvokeRequired)
+            {
+                this.listView_Log.Invoke(new MethodInvoker(delegate ()
+                {
+                    ListViewItem Item = new ListViewItem(Time);
+                    Item.SubItems.Add(Message);
+                    this.listView_Log.Items.Add(Item);
+                }));
+            }
+            else
+            {
+                ListViewItem Item = new ListViewItem(Time);
+                Item.SubItems.Add(Message);
+                this.listView_Log.Items.Add(Item);
+            }            
         }
 
         /// <summary>

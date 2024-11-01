@@ -1,10 +1,13 @@
 using System.Diagnostics;
+using System.Net;
 
 namespace ClientProgram
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
-        public Form1()
+        Client client;
+
+        public MainForm()
         {
             InitializeComponent();
 
@@ -30,12 +33,23 @@ namespace ClientProgram
             //{
 
             //}
-            if(e.KeyCode == Keys.Enter) 
+            if (e.KeyCode == Keys.Enter)
             {
                 e.Handled = true;
 
-                this.button_Send.PerformClick();                
+                this.button_Send.PerformClick();
             }
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            // 클라이언트 초기화
+            client = new Client(1, 2048);
+            client.Init();
+
+            // 서버 연결
+            IPEndPoint EndPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 5000);
+            client.Start(EndPoint);
         }
     }
 }

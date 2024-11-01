@@ -3,7 +3,6 @@ D:\Private\ChatProgram\ChatProgram\ClientProgram\bin\x64\Debug\net8.0-windows\Cl
 D:\Private\ChatProgram\ChatProgram\ClientProgram\bin\x64\Debug\net8.0-windows\ClientProgram.runtimeconfig.json
 D:\Private\ChatProgram\ChatProgram\ClientProgram\bin\x64\Debug\net8.0-windows\ClientProgram.dll
 D:\Private\ChatProgram\ChatProgram\ClientProgram\bin\x64\Debug\net8.0-windows\ClientProgram.pdb
-D:\Private\ChatProgram\ChatProgram\ClientProgram\obj\x64\Debug\net8.0-windows\ClientProgram.Form1.resources
 D:\Private\ChatProgram\ChatProgram\ClientProgram\obj\x64\Debug\net8.0-windows\ClientProgram.MessageControl.resources
 D:\Private\ChatProgram\ChatProgram\ClientProgram\obj\x64\Debug\net8.0-windows\ClientProgram.csproj.GenerateResource.cache
 D:\Private\ChatProgram\ChatProgram\ClientProgram\obj\x64\Debug\net8.0-windows\ClientProgram.GeneratedMSBuildEditorConfig.editorconfig
@@ -16,3 +15,4 @@ D:\Private\ChatProgram\ChatProgram\ClientProgram\obj\x64\Debug\net8.0-windows\re
 D:\Private\ChatProgram\ChatProgram\ClientProgram\obj\x64\Debug\net8.0-windows\ClientProgram.pdb
 D:\Private\ChatProgram\ChatProgram\ClientProgram\obj\x64\Debug\net8.0-windows\ClientProgram.genruntimeconfig.cache
 D:\Private\ChatProgram\ChatProgram\ClientProgram\obj\x64\Debug\net8.0-windows\ref\ClientProgram.dll
+D:\Private\ChatProgram\ChatProgram\ClientProgram\obj\x64\Debug\net8.0-windows\ClientProgram.MainForm.resources

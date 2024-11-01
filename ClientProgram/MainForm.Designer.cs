@@ -1,6 +1,6 @@
 ﻿namespace ClientProgram
 {
-    partial class Form1
+    partial class MainForm
     {
         /// <summary>
         ///  Required designer variable.
@@ -81,16 +81,17 @@
             flowLayoutPanel_Message.Size = new Size(800, 406);
             flowLayoutPanel_Message.TabIndex = 1;
             // 
-            // Form1
+            // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
             Controls.Add(flowLayoutPanel_Message);
             Controls.Add(tableLayoutPanel1);
-            Name = "Form1";
+            Name = "MainForm";
             Text = "채팅 프로그램";
             FormClosed += Form1_FormClosed;
+            Load += MainForm_Load;
             tableLayoutPanel1.ResumeLayout(false);
             ResumeLayout(false);
         }
