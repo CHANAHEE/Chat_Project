@@ -22,6 +22,8 @@ namespace ClientProgram
         private void button_Send_Click(object sender, EventArgs e)
         {
             // 서버로 보내기
+            client.SendMessage(this.richTextBox_Message.Text);
+
             this.flowLayoutPanel_Message.Controls.Add(new MessageControl(this.richTextBox_Message.Text, DateTime.Now));
 
             this.richTextBox_Message.Clear();

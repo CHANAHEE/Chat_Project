@@ -1,0 +1,87 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\Project\\ChatProject\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{664B8D8B-9836-4903-A90B-CE3BF6938D0B}|ClientProgram\\ClientProgram.csproj|d:\\project\\chatproject\\clientprogram\\client.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{664B8D8B-9836-4903-A90B-CE3BF6938D0B}|ClientProgram\\ClientProgram.csproj|solutionrelative:clientprogram\\client.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{664B8D8B-9836-4903-A90B-CE3BF6938D0B}|ClientProgram\\ClientProgram.csproj|d:\\project\\chatproject\\clientprogram\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{664B8D8B-9836-4903-A90B-CE3BF6938D0B}|ClientProgram\\ClientProgram.csproj|solutionrelative:clientprogram\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{664B8D8B-9836-4903-A90B-CE3BF6938D0B}|ClientProgram\\ClientProgram.csproj|d:\\project\\chatproject\\clientprogram\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{664B8D8B-9836-4903-A90B-CE3BF6938D0B}|ClientProgram\\ClientProgram.csproj|solutionrelative:clientprogram\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5A4C73F5-8BD9-42BF-89DB-D8EE1C120789}|ServerProgram\\ServerProgram.csproj|d:\\project\\chatproject\\serverprogram\\server.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5A4C73F5-8BD9-42BF-89DB-D8EE1C120789}|ServerProgram\\ServerProgram.csproj|solutionrelative:serverprogram\\server.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "MainForm.cs",
+              "DocumentMoniker": "D:\\Project\\ChatProject\\ClientProgram\\MainForm.cs",
+              "RelativeDocumentMoniker": "ClientProgram\\MainForm.cs",
+              "ToolTip": "D:\\Project\\ChatProject\\ClientProgram\\MainForm.cs",
+              "RelativeToolTip": "ClientProgram\\MainForm.cs",
+              "ViewState": "AgIAAA4AAAAAAAAAAAAiwBgAAAATAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-02T11:30:06.024Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "MainForm.cs [\uB514\uC790\uC778]",
+              "DocumentMoniker": "D:\\Project\\ChatProject\\ClientProgram\\MainForm.cs",
+              "RelativeDocumentMoniker": "ClientProgram\\MainForm.cs",
+              "ToolTip": "D:\\Project\\ChatProject\\ClientProgram\\MainForm.cs [\uB514\uC790\uC778]",
+              "RelativeToolTip": "ClientProgram\\MainForm.cs [\uB514\uC790\uC778]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-02T11:30:00.521Z",
+              "EditorCaption": " [\uB514\uC790\uC778]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Client.cs",
+              "DocumentMoniker": "D:\\Project\\ChatProject\\ClientProgram\\Client.cs",
+              "RelativeDocumentMoniker": "ClientProgram\\Client.cs",
+              "ToolTip": "D:\\Project\\ChatProject\\ClientProgram\\Client.cs",
+              "RelativeToolTip": "ClientProgram\\Client.cs",
+              "ViewState": "AgIAAHEAAAAAAAAAAAAlwGsAAAAUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-02T11:20:14.006Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Server.cs",
+              "DocumentMoniker": "D:\\Project\\ChatProject\\ServerProgram\\Server.cs",
+              "RelativeDocumentMoniker": "ServerProgram\\Server.cs",
+              "ToolTip": "D:\\Project\\ChatProject\\ServerProgram\\Server.cs",
+              "RelativeToolTip": "ServerProgram\\Server.cs",
+              "ViewState": "AgIAAHgAAAAAAAAAAAAuwIEAAABIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-02T10:43:55.368Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

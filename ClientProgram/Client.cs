@@ -24,12 +24,6 @@ namespace ClientProgram
         {
             bufferManager.InitBuffer();
 
-            SocketAsyncEventArgs readWriteEventArg;
-
-            readWriteEventArg = new SocketAsyncEventArgs();
-            readWriteEventArg.Completed += new EventHandler<SocketAsyncEventArgs>(IO_Completed);
-
-            bufferManager.SetBuffer(readWriteEventArg);
         }
 
         public void Start(IPEndPoint localEndPoint)
@@ -69,30 +63,33 @@ namespace ClientProgram
 
         private void ProcessConnect(SocketAsyncEventArgs e)
         {
-            //SocketAsyncEventArgs readEventArgs = readWritePool.Pop();
-            //readEventArgs.UserToken = e.AcceptSocket;
+            SocketAsyncEventArgs readWriteEventArg;
 
-            //bool willRaiseEvent = e.AcceptSocket.ReceiveAsync(readEventArgs);
-            //if (!willRaiseEvent)
-            //{
-            //    ProcessReceive(readEventArgs);
-            //}
+            readWriteEventArg = new SocketAsyncEventArgs();
+            readWriteEventArg.Completed += new EventHandler<SocketAsyncEventArgs>(ReceiveCompleted);
+
+            if (!clientSocket.ReceiveAsync(readWriteEventArg))
+            {
+                ProcessReceive(readWriteEventArg);
+            }
 
             Console.WriteLine("Connect Start!");
         }
 
-        void IO_Completed(object sender, SocketAsyncEventArgs e)
+        private void ReceiveCompleted(object sender, SocketAsyncEventArgs e)
         {
-            switch (e.LastOperation)
+            if (e.SocketError != SocketError.Success || e.BytesTransferred == 0)
             {
-                case SocketAsyncOperation.Receive:
-                    ProcessReceive(e);
-                    break;
-                case SocketAsyncOperation.Send:
-                    ProcessSend(e);
-                    break;
-                default:
-                    throw new ArgumentException("The last operation completed on the socket was not a receive or send");
+                Console.WriteLine("서버와의 연결이 끊어졌습니다.");
+                return;
+            }
+
+            ProcessReceive(e);
+
+            // 계속해서 데이터 수신
+            if (!clientSocket.ReceiveAsync(e))
+            {
+                ProcessReceive(e);
             }
         }
 
@@ -100,38 +97,38 @@ namespace ClientProgram
         {
             if (e.BytesTransferred > 0 && e.SocketError == SocketError.Success)
             {
-                e.SetBuffer(e.Offset, e.BytesTransferred);
-                Socket socket = (Socket)e.UserToken;
-                bool willRaiseEvent = socket.SendAsync(e);
-
-                if (!willRaiseEvent)
-                {
-                    ProcessSend(e);
-                }
+                string message = Encoding.UTF8.GetString(e.Buffer, 0, e.BytesTransferred);
+                Console.WriteLine(message);
             }
             else
             {
                 CloseClientSocket(e);
             }
         }
-
-        private void ProcessSend(SocketAsyncEventArgs e)
+        public void SendMessage(string message)
         {
-            if (e.SocketError == SocketError.Success)
-            {
-                Socket socket = (Socket)e.UserToken;
-                bool willRaiseEvent = socket.ReceiveAsync(e);
+            byte[] messageBuffer = Encoding.UTF8.GetBytes(message);
+            var sendEventArgs = new SocketAsyncEventArgs();
+            sendEventArgs.SetBuffer(messageBuffer, 0, messageBuffer.Length);
+            sendEventArgs.Completed += SendCompleted;
 
-                if (!willRaiseEvent)
-                {
-                    ProcessReceive(e);
-                }
-            }
-            else
+            if (!clientSocket.SendAsync(sendEventArgs))
             {
-                CloseClientSocket(e);
+                SendCompleted(this, sendEventArgs);
             }
         }
+
+        private void SendCompleted(object sender, SocketAsyncEventArgs e)
+        {
+            if (e.SocketError != SocketError.Success)
+            {
+                Console.WriteLine("메시지 전송 중 오류 발생.");
+                return;
+            }
+
+            Console.WriteLine($"서버에 전송한 메시지: {Encoding.UTF8.GetString(e.Buffer, 0, e.BytesTransferred)}");
+        }
+
 
         private void CloseClientSocket(SocketAsyncEventArgs e)
         {

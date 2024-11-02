@@ -59,7 +59,7 @@ namespace ServerProgram
 
             SocketAsyncEventArgs acceptEventArg = new SocketAsyncEventArgs();
             acceptEventArg.Completed += new EventHandler<SocketAsyncEventArgs>(AcceptEventArg_Completed);
-            acceptEventArg.
+            
             StartAccept(acceptEventArg);
         }
 
@@ -95,16 +95,16 @@ namespace ServerProgram
 
         private void ProcessAccept(SocketAsyncEventArgs e)
         {
-            //SocketAsyncEventArgs readEventArgs = readWritePool.Pop();
-            //readEventArgs.UserToken = e.AcceptSocket;
+            mainForm.Update_Message(DateTime.Now.ToString(), "Client Connected!");
 
-            //bool willRaiseEvent = e.AcceptSocket.ReceiveAsync(readEventArgs);
-            //if (!willRaiseEvent)
-            //{
-            //    ProcessReceive(readEventArgs);
-            //}
+            SocketAsyncEventArgs readEventArgs = readWritePool.Pop();
+            readEventArgs.UserToken = e.AcceptSocket;
 
-            mainForm.Update_Message(DateTime.Now.ToString(), "Client is Connected!");
+            bool willRaiseEvent = e.AcceptSocket.ReceiveAsync(readEventArgs);
+            if (!willRaiseEvent)
+            {
+                ProcessReceive(readEventArgs);
+            }
         }
 
         void IO_Completed(object sender, SocketAsyncEventArgs e)
@@ -126,6 +126,9 @@ namespace ServerProgram
         {
             if (e.BytesTransferred > 0 && e.SocketError == SocketError.Success)
             {
+                string message = Encoding.UTF8.GetString(e.Buffer, 0, e.BytesTransferred);
+                mainForm.Update_Message(DateTime.Now.ToString(), message);
+
                 e.SetBuffer(e.Offset, e.BytesTransferred);
                 Socket socket = (Socket)e.UserToken;
                 bool willRaiseEvent = socket.SendAsync(e);
@@ -138,6 +141,7 @@ namespace ServerProgram
             else
             {
                 CloseClientSocket(e);
+                mainForm.Update_Message(DateTime.Now.ToString(), "Client DisConnected!");
             }
         }
 
