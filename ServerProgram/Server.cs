@@ -99,12 +99,18 @@ namespace ServerProgram
 
             SocketAsyncEventArgs readEventArgs = readWritePool.Pop();
             readEventArgs.UserToken = e.AcceptSocket;
+            readEventArgs.Completed += ReceiveEventArg_Completed;
 
             bool willRaiseEvent = e.AcceptSocket.ReceiveAsync(readEventArgs);
             if (!willRaiseEvent)
             {
                 ProcessReceive(readEventArgs);
             }
+        }
+
+        void ReceiveEventArg_Completed(object sender, SocketAsyncEventArgs e)
+        {
+            ProcessReceive(e);
         }
 
         void IO_Completed(object sender, SocketAsyncEventArgs e)

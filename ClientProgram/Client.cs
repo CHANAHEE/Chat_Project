@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace ClientProgram
 {
@@ -100,11 +101,17 @@ namespace ClientProgram
                 string message = Encoding.UTF8.GetString(e.Buffer, 0, e.BytesTransferred);
                 Console.WriteLine(message);
             }
+            else if(e.SocketError == SocketError.NotConnected)
+            {
+                Console.WriteLine("서버와 연결중 . . .");
+                return;
+            }
             else
             {
                 CloseClientSocket(e);
             }
         }
+
         public void SendMessage(string message)
         {
             byte[] messageBuffer = Encoding.UTF8.GetBytes(message);
