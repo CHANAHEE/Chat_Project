@@ -5,6 +5,7 @@ using System.Net.Sockets;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace ServerProgram
 {
@@ -12,20 +13,15 @@ namespace ServerProgram
     {
         private int connectionCount;
         Socket serverSocket;
-
-        BufferManager bufferManager;
-        const int opsToPreAlloc = 2;
-        
+                
         SocketAsyncEventArgsPool readWritePool;
         Semaphore maxNumberAcceptedClients;
 
         MainForm mainForm;
 
-        public Server(int numConnections, int receiveBufferSize, MainForm mainForm)
+        public Server(int numConnections, MainForm mainForm)
         {
             connectionCount = numConnections;
-
-            bufferManager = new BufferManager(receiveBufferSize * numConnections * opsToPreAlloc, receiveBufferSize);
 
             readWritePool = new SocketAsyncEventArgsPool(numConnections);
             maxNumberAcceptedClients = new Semaphore(numConnections, numConnections);
@@ -35,17 +31,13 @@ namespace ServerProgram
 
         public void Init()
         {
-            bufferManager.InitBuffer();
-
             SocketAsyncEventArgs readWriteEventArg;
 
             for (int i = 0; i < connectionCount; i++)
             {
                 readWriteEventArg = new SocketAsyncEventArgs();
                 readWriteEventArg.Completed += new EventHandler<SocketAsyncEventArgs>(IO_Completed);
-
-                bufferManager.SetBuffer(readWriteEventArg);
-                
+                                
                 readWritePool.Push(readWriteEventArg);
             }
         }
@@ -61,10 +53,10 @@ namespace ServerProgram
             // 소켓 리스닝 (소켓 수신대기 및 갯수 설정)
             serverSocket.Listen(100);
 
-            // 비동기 작업에 대한 정보 설정
+            // 연결 비동기 작업에 대한 정보 설정
             SocketAsyncEventArgs acceptEventArg = new SocketAsyncEventArgs();
             acceptEventArg.Completed += new EventHandler<SocketAsyncEventArgs>(AcceptEventArg_Completed);
-            
+
             StartAccept(acceptEventArg);
         }
 
@@ -77,11 +69,11 @@ namespace ServerProgram
                 {
                     // 클라이언트 최대 수 제한
                     maxNumberAcceptedClients.WaitOne();
-                    
+
                     // 이전 수락 작업 초기화
                     acceptEventArg.AcceptSocket = null;
 
-                    // 비동기 수락 작업 : 즉시 반환이면 true, 아니면 false
+                    // 비동기 수락 작업 : 즉시 반환이면 false, 아니면 true
                     willRaiseEvent = serverSocket.AcceptAsync(acceptEventArg);
                     if (!willRaiseEvent)
                     {
@@ -106,28 +98,29 @@ namespace ServerProgram
         {
             mainForm.Update_Message(DateTime.Now.ToString(), "Client Connected!");
 
-            // Pool 에서 SocketAsyncEventArgs 객체 가져오기
-            SocketAsyncEventArgs readEventArgs = readWritePool.Pop();
+            //// Pool 에서 SocketAsyncEventArgs 객체 가져오기
+            //SocketAsyncEventArgs readEventArgs = readWritePool.Pop();
 
-            // 클라이언트가 연결된 소켓을 할당하여 추후 작업 시 해당 소켓 참조 
-            readEventArgs.UserToken = e.AcceptSocket;
+            //// 클라이언트가 연결된 소켓을 할당하여 추후 작업 시 해당 소켓 참조 
+            //readEventArgs.UserToken = e.AcceptSocket;
 
-            // 비동기 수신 시작
-            bool willRaiseEvent = e.AcceptSocket.ReceiveAsync(readEventArgs);
-            if (!willRaiseEvent)
-            {
-                switch (e.LastOperation)
-                {
-                    case SocketAsyncOperation.Receive:
-                        ProcessReceive(e);
-                        break;
-                    case SocketAsyncOperation.Send:
-                        ProcessSend(e);
-                        break;
-                    default:
-                        throw new ArgumentException("The last operation completed on the socket was not a receive or send");
-                }
-            }
+            //// 비동기 수신 시작
+            //bool willRaiseEvent = e.AcceptSocket.ReceiveAsync(readEventArgs);
+            //if (!willRaiseEvent)
+            //{
+            //    switch (e.LastOperation)
+            //    {
+            //        case SocketAsyncOperation.Receive:
+            //            ProcessReceive(e);
+            //            break;
+            //        case SocketAsyncOperation.Send:
+            //            mainForm.Update_Message(DateTime.Now.ToString(), "SEND");
+            //            //ProcessSend(e);
+            //            break;
+            //        default:
+            //            throw new ArgumentException("The last operation completed on the socket was not a receive or send");
+            //    }
+            //}
         }
 
         void IO_Completed(object sender, SocketAsyncEventArgs e)
@@ -138,7 +131,8 @@ namespace ServerProgram
                     ProcessReceive(e);
                     break;
                 case SocketAsyncOperation.Send:
-                    ProcessSend(e);
+                    mainForm.Update_Message(DateTime.Now.ToString(), "SEND");
+                    //ProcessSend(e);
                     break;
                 default:
                     throw new ArgumentException("The last operation completed on the socket was not a receive or send");
@@ -161,7 +155,7 @@ namespace ServerProgram
                 //    ProcessSend(e);
                 //}
 
-                ProcessSend(e);
+                //ProcessSend(e);
             }
             else
             {

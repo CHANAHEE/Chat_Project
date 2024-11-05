@@ -34,7 +34,7 @@ namespace ServerProgram
 
         private void Create_Server()
         {
-            server = new Server(1, 2048, this);
+            server = new Server(2, this);
             server.Init();
         }
 
