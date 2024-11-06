@@ -46,8 +46,7 @@ namespace ClientProgram
         private void MainForm_Load(object sender, EventArgs e)
         {
             // 클라이언트 초기화
-            client = new Client(1, 2048);
-            client.Init();
+            client = new Client();
 
             // 서버 연결
             IPEndPoint EndPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 5000);

@@ -81,7 +81,10 @@ namespace ServerProgram
             this.button_Stop.BackColor = Color.Red;
             this.button_Stop.ForeColor = Color.WhiteSmoke;
 
-            server.CloseAllClientSocket();
+            if(server is not null)
+            {
+                server.CloseAllClientSocket();
+            }            
         }
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
