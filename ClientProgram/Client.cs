@@ -67,6 +67,7 @@ namespace ClientProgram
 
             readWriteEventArg = new SocketAsyncEventArgs();
             readWriteEventArg.Completed += new EventHandler<SocketAsyncEventArgs>(ReceiveCompleted);
+            readWriteEventArg.SetBuffer(new byte[1024], 0, 1024);
 
             // 비동기 데이터 수신
             if (!clientSocket.ReceiveAsync(readWriteEventArg))
@@ -149,6 +150,28 @@ namespace ClientProgram
             }
 
             Console.WriteLine($"서버에 전송한 메시지: {Encoding.UTF8.GetString(e.Buffer, 0, e.BytesTransferred)}");
+
+            // 데이터 송수신을 위한 SocketAsyncEventArgs 객체 초기화
+            SocketAsyncEventArgs readWriteEventArg;
+
+            readWriteEventArg = new SocketAsyncEventArgs();
+            readWriteEventArg.Completed += new EventHandler<SocketAsyncEventArgs>(ReceiveCompleted);
+            readWriteEventArg.SetBuffer(new byte[1024], 0, 1024);
+
+            // 비동기 데이터 수신
+            if (!clientSocket.ReceiveAsync(readWriteEventArg))
+            {
+                // 서버 연결 오류 시
+                if (e.SocketError != SocketError.Success || e.BytesTransferred == 0)
+                {
+                    Console.WriteLine("서버 연결 시도중 . . .");
+                    StartConnect(e);
+
+                    return;
+                }
+
+                ProcessReceive(readWriteEventArg);
+            }
         }
 
 

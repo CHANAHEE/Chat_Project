@@ -101,6 +101,14 @@ namespace ServerProgram
             // 서버 UI 에 클라이언트 연결 성공 메시지 추가
             mainForm.Update_Message(DateTime.Now.ToString(), "Client Connected!");
 
+            byte[] byteAllBady = new byte[1024];
+            byteAllBady[0] = 5;
+            byteAllBady[0] = 7;
+            SocketAsyncEventArgs saeaServer = new SocketAsyncEventArgs();
+            saeaServer.SetBuffer(byteAllBady, 0, byteAllBady.Length);
+            saeaServer.Completed += new EventHandler<SocketAsyncEventArgs>(Send_Completed);
+            serverSocket.SendAsync(saeaServer);
+
             // Pool 에서 SocketAsyncEventArgs 객체 가져오기
             SocketAsyncEventArgs readEventArgs = readWritePool.Pop();
 
@@ -116,6 +124,11 @@ namespace ServerProgram
             {
                 ProcessReceive(e);
             }
+        }
+
+        private void Send_Completed(object? sender, SocketAsyncEventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         void IO_Completed(object sender, SocketAsyncEventArgs e)
@@ -145,11 +158,11 @@ namespace ServerProgram
                 mainForm.Update_Message(DateTime.Now.ToString(), message);
 
                 // 데이터 송신을 위한 버퍼 작업
-                e.SetBuffer(e.Buffer, 0, e.BytesTransferred);
+                e.SetBuffer(new byte[1024], 0, e.BytesTransferred);
                 Socket socket = (Socket)e.UserToken;
 
                 // 비동기 데이터 송신 작업
-                bool willRaiseEvent = socket.SendAsync(e);
+                bool willRaiseEvent = serverSocket.SendAsync(e);
                 if (!willRaiseEvent)
                 {
                     ProcessSend(e);
@@ -166,9 +179,13 @@ namespace ServerProgram
         {
             if (e.SocketError == SocketError.Success)
             {
+                // 소켓 재사용
                 Socket socket = (Socket)e.UserToken;
+
+                // 데이터 재수신을 위한 버퍼 작업
                 e.SetBuffer(e.Buffer, 0, 1024);
 
+                // 비동기 데이터 수신 작업
                 bool willRaiseEvent = socket.ReceiveAsync(e);
 
                 if (!willRaiseEvent)
