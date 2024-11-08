@@ -58,6 +58,7 @@ namespace ServerProgram
             // 연결 비동기 작업에 대한 정보 설정
             SocketAsyncEventArgs acceptEventArg = new SocketAsyncEventArgs();
             acceptEventArg.Completed += new EventHandler<SocketAsyncEventArgs>(AcceptEventArg_Completed);
+            acceptEventArg.UserToken = serverSocket;
 
             StartAccept(acceptEventArg);
         }
@@ -101,14 +102,6 @@ namespace ServerProgram
             // 서버 UI 에 클라이언트 연결 성공 메시지 추가
             mainForm.Update_Message(DateTime.Now.ToString(), "Client Connected!");
 
-            byte[] byteAllBady = new byte[1024];
-            byteAllBady[0] = 5;
-            byteAllBady[0] = 7;
-            SocketAsyncEventArgs saeaServer = new SocketAsyncEventArgs();
-            saeaServer.SetBuffer(byteAllBady, 0, byteAllBady.Length);
-            saeaServer.Completed += new EventHandler<SocketAsyncEventArgs>(Send_Completed);
-            serverSocket.SendAsync(saeaServer);
-
             // Pool 에서 SocketAsyncEventArgs 객체 가져오기
             SocketAsyncEventArgs readEventArgs = readWritePool.Pop();
 
@@ -124,11 +117,6 @@ namespace ServerProgram
             {
                 ProcessReceive(e);
             }
-        }
-
-        private void Send_Completed(object? sender, SocketAsyncEventArgs e)
-        {
-            throw new NotImplementedException();
         }
 
         void IO_Completed(object sender, SocketAsyncEventArgs e)
@@ -158,14 +146,19 @@ namespace ServerProgram
                 mainForm.Update_Message(DateTime.Now.ToString(), message);
 
                 // 데이터 송신을 위한 버퍼 작업
-                e.SetBuffer(new byte[1024], 0, e.BytesTransferred);
-                Socket socket = (Socket)e.UserToken;
+                byte[] SendMessage = new byte[1024];
+                Buffer.BlockCopy(e.Buffer, 0, SendMessage, 0, e.BytesTransferred);
+
+                SocketAsyncEventArgs sendEventArgs = new SocketAsyncEventArgs();
+                sendEventArgs.SetBuffer(SendMessage, 0, e.BytesTransferred);
+                sendEventArgs.Completed += IO_Completed;
+                sendEventArgs.UserToken = e.UserToken;
 
                 // 비동기 데이터 송신 작업
-                bool willRaiseEvent = serverSocket.SendAsync(e);
+                bool willRaiseEvent = ((Socket)e.UserToken).SendAsync(sendEventArgs);
                 if (!willRaiseEvent)
                 {
-                    ProcessSend(e);
+                    ProcessSend(sendEventArgs);
                 }
             }
             else

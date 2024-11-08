@@ -62,27 +62,27 @@ namespace ClientProgram
 
         private void ProcessConnect(SocketAsyncEventArgs e)
         {
-            // 데이터 송수신을 위한 SocketAsyncEventArgs 객체 초기화
-            SocketAsyncEventArgs readWriteEventArg;
+            //// 데이터 송수신을 위한 SocketAsyncEventArgs 객체 초기화
+            //SocketAsyncEventArgs readWriteEventArg;
 
-            readWriteEventArg = new SocketAsyncEventArgs();
-            readWriteEventArg.Completed += new EventHandler<SocketAsyncEventArgs>(ReceiveCompleted);
-            readWriteEventArg.SetBuffer(new byte[1024], 0, 1024);
+            //readWriteEventArg = new SocketAsyncEventArgs();
+            //readWriteEventArg.Completed += new EventHandler<SocketAsyncEventArgs>(ReceiveCompleted);
+            //readWriteEventArg.SetBuffer(new byte[1024], 0, 1024);
 
-            // 비동기 데이터 수신
-            if (!clientSocket.ReceiveAsync(readWriteEventArg))
-            {
-                // 서버 연결 오류 시
-                if (e.SocketError != SocketError.Success || e.BytesTransferred == 0)
-                {
-                    Console.WriteLine("서버 연결 시도중 . . .");
-                    StartConnect(e);
+            //// 비동기 데이터 수신
+            //if (!clientSocket.ReceiveAsync(readWriteEventArg))
+            //{
+            //    // 서버 연결 오류 시
+            //    if (e.SocketError != SocketError.Success || e.BytesTransferred == 0)
+            //    {
+            //        Console.WriteLine("서버 연결 시도중 . . .");
+            //        StartConnect(e);
 
-                    return;
-                }
+            //        return;
+            //    }
 
-                ProcessReceive(readWriteEventArg);
-            }
+            //    ProcessReceive(readWriteEventArg);
+            //}
 
             Console.WriteLine("Server Connect Complete!");
         }
@@ -130,7 +130,7 @@ namespace ClientProgram
         public void SendMessage(string message)
         {
             byte[] messageBuffer = Encoding.UTF8.GetBytes(message);
-
+                        
             SocketAsyncEventArgs sendEventArgs = new SocketAsyncEventArgs();
             sendEventArgs.SetBuffer(messageBuffer, 0, messageBuffer.Length);
             sendEventArgs.Completed += SendCompleted;
