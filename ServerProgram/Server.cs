@@ -14,35 +14,20 @@ namespace ServerProgram
         private int connectionCount;
         Socket serverSocket;
                 
-        SocketAsyncEventArgsPool readWritePool;
         Semaphore maxNumberAcceptedClients;
 
         MainForm mainForm;
+
+        Dictionary<Socket, SocketAsyncEventArgs> sendArgsCollection = new Dictionary<Socket, SocketAsyncEventArgs>();
 
         public Server(int numConnections, MainForm mainForm)
         {
             connectionCount = numConnections;
 
-            readWritePool = new SocketAsyncEventArgsPool(numConnections);
             maxNumberAcceptedClients = new Semaphore(numConnections, numConnections);
 
             this.mainForm = mainForm;
         }
-
-        public void Init()
-        {
-            SocketAsyncEventArgs readEventArg;
-
-            for (int i = 0; i < connectionCount; i++)
-            {
-                readEventArg = new SocketAsyncEventArgs();
-                readEventArg.Completed += new EventHandler<SocketAsyncEventArgs>(IO_Completed);
-                                
-                readWritePool.Push(readEventArg);
-            }
-        }
-
-
 
         public void Start(IPEndPoint localEndPoint)
         {
@@ -55,15 +40,10 @@ namespace ServerProgram
             // 소켓 리스닝 (소켓 수신대기 및 갯수 설정)
             serverSocket.Listen(100);
 
-            // 연결 비동기 작업에 대한 정보 설정
-            SocketAsyncEventArgs acceptEventArg = new SocketAsyncEventArgs();
-            acceptEventArg.Completed += new EventHandler<SocketAsyncEventArgs>(AcceptEventArg_Completed);
-            acceptEventArg.UserToken = serverSocket;
-
-            StartAccept(acceptEventArg);
+            StartAccept();
         }
 
-        public void StartAccept(SocketAsyncEventArgs acceptEventArg)
+        public void StartAccept()
         {
             try
             {
@@ -73,14 +53,14 @@ namespace ServerProgram
                     // 클라이언트 최대 수 제한
                     maxNumberAcceptedClients.WaitOne();
 
-                    // 이전 수락 작업 초기화
-                    acceptEventArg.AcceptSocket = null;
-
                     // 비동기 수락 작업 : 즉시 반환이면 false, 아니면 true
-                    willRaiseEvent = serverSocket.AcceptAsync(acceptEventArg);
+                    SocketAsyncEventArgs AcceptEventArg = new SocketAsyncEventArgs();
+                    AcceptEventArg.Completed += new EventHandler<SocketAsyncEventArgs>(AcceptEventArg_Completed);
+
+                    willRaiseEvent = serverSocket.AcceptAsync(AcceptEventArg);
                     if (!willRaiseEvent)
                     {
-                        ProcessAccept(acceptEventArg);
+                        ProcessAccept(AcceptEventArg);
                     }
                 }
             }
@@ -94,28 +74,37 @@ namespace ServerProgram
         {
             ProcessAccept(e);
 
-            StartAccept(e);
+            StartAccept();
         }
 
         private void ProcessAccept(SocketAsyncEventArgs e)
         {
+            Socket ClientSocket = e.AcceptSocket;
+
+            if(ClientSocket == null)
+            {
+                return;
+            }
+
             // 서버 UI 에 클라이언트 연결 성공 메시지 추가
-            mainForm.Update_Message(DateTime.Now.ToString(), "Client Connected!");
-
-            // Pool 에서 SocketAsyncEventArgs 객체 가져오기
-            SocketAsyncEventArgs readEventArgs = readWritePool.Pop();
-
-            // 클라이언트가 연결된 소켓을 할당하여 추후 작업 시 해당 소켓 참조 
-            readEventArgs.UserToken = e.AcceptSocket;
+            mainForm.Update_Message(DateTime.Now.ToString(), "Client Connected! - " + ClientSocket.RemoteEndPoint);
 
             // readEventArgs 객체의 버퍼를 설정. 1024 바이트만큼 미리 할당. 이후 ReceiveAsync 을 통해 수신된 데이터를 저장할 버퍼.
-            readEventArgs.SetBuffer(new byte[1024], 0, 1024);
+            SocketAsyncEventArgs ReceiveEventArg = new SocketAsyncEventArgs();
+            ReceiveEventArg.Completed += new EventHandler<SocketAsyncEventArgs>(IO_Completed);
+            ReceiveEventArg.SetBuffer(new byte[1024], 0, 1024);
+            ReceiveEventArg.UserToken = ClientSocket;
+
+            SocketAsyncEventArgs SendEventArg = new SocketAsyncEventArgs();
+            SendEventArg.Completed += new EventHandler<SocketAsyncEventArgs>(IO_Completed);
+            SendEventArg.UserToken = ClientSocket;
+            sendArgsCollection.Add(ClientSocket, SendEventArg);
 
             // 비동기 수신 시작
-            bool willRaiseEvent = e.AcceptSocket.ReceiveAsync(readEventArgs);
+            bool willRaiseEvent = ClientSocket.ReceiveAsync(ReceiveEventArg);
             if (!willRaiseEvent)
             {
-                ProcessReceive(e);
+                ProcessReceive(ReceiveEventArg);
             }
         }
 
@@ -145,20 +134,42 @@ namespace ServerProgram
                 // 서버 UI 에 수신받은 클라이언트 메시지 추가
                 mainForm.Update_Message(DateTime.Now.ToString(), message);
 
-                // 데이터 송신을 위한 버퍼 작업
-                byte[] SendMessage = new byte[1024];
-                Buffer.BlockCopy(e.Buffer, 0, SendMessage, 0, e.BytesTransferred);
-
-                SocketAsyncEventArgs sendEventArgs = new SocketAsyncEventArgs();
-                sendEventArgs.SetBuffer(SendMessage, 0, e.BytesTransferred);
-                sendEventArgs.Completed += IO_Completed;
-                sendEventArgs.UserToken = e.UserToken;
-
-                // 비동기 데이터 송신 작업
-                bool willRaiseEvent = ((Socket)e.UserToken).SendAsync(sendEventArgs);
-                if (!willRaiseEvent)
+                // 비동기 데이터 송신 작업. 수신 받은 클라이언트 이외의 모든 클라이언트에게 데이터 전송
+                foreach(KeyValuePair<Socket,SocketAsyncEventArgs> Args in sendArgsCollection)
                 {
-                    ProcessSend(sendEventArgs);
+                    if(Args.Value.UserToken == e.UserToken)
+                    {
+                        continue;
+                    }
+
+                    // 데이터 송신을 위한 버퍼 작업
+                    byte[] SendMessage = new byte[1024];                    
+                    Buffer.BlockCopy(e.Buffer, 0, SendMessage, 0, e.BytesTransferred);
+                    Args.Value.SetBuffer(SendMessage, 0, e.BytesTransferred);
+
+                    bool willRaiseEvent = ((Socket)Args.Value.UserToken).SendAsync(Args.Value);
+                    if (!willRaiseEvent)
+                    {
+                        ProcessSend(Args.Value);
+                    }
+                }
+
+                if (e.SocketError == SocketError.Success)
+                {
+                    // 데이터 재수신을 위한 버퍼 작업
+                    e.SetBuffer(e.Buffer, 0, 1024);
+
+                    // 비동기 데이터 수신 작업
+                    bool willRaiseEvent = ((Socket)e.UserToken).ReceiveAsync(e);
+
+                    if (!willRaiseEvent)
+                    {
+                        ProcessReceive(e);
+                    }
+                }
+                else
+                {
+                    CloseClientSocket(e);
                 }
             }
             else
@@ -172,19 +183,7 @@ namespace ServerProgram
         {
             if (e.SocketError == SocketError.Success)
             {
-                // 소켓 재사용
-                Socket socket = (Socket)e.UserToken;
-
-                // 데이터 재수신을 위한 버퍼 작업
-                e.SetBuffer(e.Buffer, 0, 1024);
-
-                // 비동기 데이터 수신 작업
-                bool willRaiseEvent = socket.ReceiveAsync(e);
-
-                if (!willRaiseEvent)
-                {
-                    ProcessReceive(e);
-                }
+                mainForm.Update_Message(DateTime.Now.ToString(), "Send Completed!");
             }
             else
             {
@@ -209,35 +208,31 @@ namespace ServerProgram
             catch (Exception) { }
             socket.Close();
 
-            readWritePool.Push(e);
-
             maxNumberAcceptedClients.Release();
         }
 
         public void CloseAllClientSocket()
         {
-            for(int i = 0; i < readWritePool.Count; i++)
-            {
-                SocketAsyncEventArgs e = readWritePool.Pop();
+            //foreach(KeyValuePair<Socket, SocketAsyncEventArgs> e in Args)
+            //{
+            //    Socket socket = (Socket)e.Value.UserToken;
 
-                Socket socket = (Socket)e.UserToken;
+            //    if (socket == null)
+            //    {
+            //        continue;
+            //    }
 
-                if(socket == null)
-                {
-                    continue;
-                }
+            //    try
+            //    {
+            //        socket.Shutdown(SocketShutdown.Send);
+            //    }
+            //    catch (Exception) { }
+            //    socket.Close();
 
-                try
-                {
-                    socket.Shutdown(SocketShutdown.Send);
-                }
-                catch (Exception) { }
-                socket.Close();
+            //    maxNumberAcceptedClients.Release();
+            //}
 
-                maxNumberAcceptedClients.Release();                
-            }
-
-            serverSocket.Close();
+            //serverSocket.Close();
         }
     }
 }

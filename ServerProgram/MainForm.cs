@@ -35,7 +35,6 @@ namespace ServerProgram
         private void Create_Server()
         {
             server = new Server(2, this);
-            server.Init();
         }
 
         public void Update_Message(string Time, string Message) 
