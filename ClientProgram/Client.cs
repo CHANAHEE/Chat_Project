@@ -40,12 +40,14 @@ namespace ClientProgram
 
                 if (!willRaiseEvent)
                 {
+                    SendMessage("Connect Complete!");
                     Console.WriteLine("Server Connect Complete!");
                 }
             }
             catch (Exception ex) 
             {
                 Console.WriteLine(ex.Message);
+                StartConnect();
             }
         }
 
@@ -53,7 +55,7 @@ namespace ClientProgram
         void ConnectEventArg_Completed(object sender, SocketAsyncEventArgs e)
         {
             // 서버 연결 오류 시
-            if (e.SocketError != SocketError.Success || e.BytesTransferred == 0)
+            if (e.SocketError != SocketError.Success)
             {
                 Console.WriteLine("서버 연결 시도중 . . .");
                 StartConnect();
@@ -61,6 +63,7 @@ namespace ClientProgram
                 return;
             }
 
+            SendMessage("Connect Complete!");
             Console.WriteLine("Server Connect Complete!");
         }
 
