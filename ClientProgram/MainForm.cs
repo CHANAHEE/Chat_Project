@@ -16,6 +16,7 @@ namespace ClientProgram
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
+            client.CloseClientSocket();
             Process.GetCurrentProcess().Kill();
         }
 

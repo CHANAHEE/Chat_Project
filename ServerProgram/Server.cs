@@ -81,8 +81,10 @@ namespace ServerProgram
         {
             Socket ClientSocket = e.AcceptSocket;
 
-            if(ClientSocket == null)
+            // 클라이언트 연결 오류 시
+            if(ClientSocket.Connected == false || ClientSocket == null)
             {
+                CloseClientSocket(e);
                 return;
             }
 
@@ -175,7 +177,7 @@ namespace ServerProgram
             else
             {
                 CloseClientSocket(e);
-                mainForm.Update_Message(DateTime.Now.ToString(), "Client DisConnected!");
+                
             }
         }
 
@@ -201,38 +203,55 @@ namespace ServerProgram
                 return;
             }
 
+            if(sendArgsCollection.ContainsKey(socket))
+            {
+                sendArgsCollection.Remove(socket);
+            }
+
+            string EndPoint = "";
+
             try
             {
+                EndPoint = ((Socket)e.UserToken).RemoteEndPoint.ToString();
                 socket.Shutdown(SocketShutdown.Send);
             }
             catch (Exception) { }
             socket.Close();
 
+            mainForm.Update_Message(DateTime.Now.ToString(), "Client DisConnected! - " + EndPoint);
+            
+            e.Dispose();
             maxNumberAcceptedClients.Release();
         }
 
         public void CloseAllClientSocket()
         {
-            //foreach(KeyValuePair<Socket, SocketAsyncEventArgs> e in Args)
-            //{
-            //    Socket socket = (Socket)e.Value.UserToken;
+            foreach (KeyValuePair<Socket, SocketAsyncEventArgs> e in sendArgsCollection)
+            {
+                Socket socket = (Socket)e.Value.UserToken;
 
-            //    if (socket == null)
-            //    {
-            //        continue;
-            //    }
+                if (socket is null)
+                {
+                    Console.WriteLine("Socket is Null");
+                    return;
+                }
 
-            //    try
-            //    {
-            //        socket.Shutdown(SocketShutdown.Send);
-            //    }
-            //    catch (Exception) { }
-            //    socket.Close();
+                string EndPoint = "";
 
-            //    maxNumberAcceptedClients.Release();
-            //}
+                try
+                {
+                    EndPoint = ((Socket)e.Value.UserToken).RemoteEndPoint.ToString();
+                    socket.Shutdown(SocketShutdown.Send);
+                }
+                catch (Exception) { }
 
-            //serverSocket.Close();
+                socket.Close();                
+                e.Value.Dispose();
+                maxNumberAcceptedClients.Release();
+                mainForm.Update_Message(DateTime.Now.ToString(), "Client DisConnected! - " + EndPoint);
+            }
+
+            serverSocket.Close();
         }
     }
 }

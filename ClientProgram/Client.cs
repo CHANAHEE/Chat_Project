@@ -14,6 +14,10 @@ namespace ClientProgram
         Socket clientSocket;
         IPEndPoint localEndPoint;
 
+        private SocketAsyncEventArgs connectArgs;
+        private SocketAsyncEventArgs sendArgs;
+        private SocketAsyncEventArgs receiveArgs;
+
         public void Start(IPEndPoint LocalEndPoint)
         {
             // 클라이언트 소켓 초기화
@@ -31,15 +35,15 @@ namespace ClientProgram
             try
             {
                 // 서버 Connect 를 위한 SocketAsyncEventArgs 객체 초기화
-                SocketAsyncEventArgs connectEventArg = new SocketAsyncEventArgs();
-                connectEventArg.Completed += new EventHandler<SocketAsyncEventArgs>(ConnectEventArg_Completed);
-                connectEventArg.RemoteEndPoint = localEndPoint;
+                connectArgs = new SocketAsyncEventArgs();
+                connectArgs.Completed += new EventHandler<SocketAsyncEventArgs>(ConnectEventArg_Completed);
+                connectArgs.RemoteEndPoint = localEndPoint;
 
                 // 서버 연결 시도. 바로 연결 시 false 반환, 지연 시 true 반환
-                bool willRaiseEvent = clientSocket.ConnectAsync(connectEventArg);
-
+                bool willRaiseEvent = clientSocket.ConnectAsync(connectArgs);
                 if (!willRaiseEvent)
                 {
+                    Init_Send_Receive();
                     SendMessage("Connect Complete!");
                     Console.WriteLine("Server Connect Complete!");
                 }
@@ -47,6 +51,12 @@ namespace ClientProgram
             catch (Exception ex) 
             {
                 Console.WriteLine(ex.Message);
+                Thread.Sleep(1000);
+
+                clientSocket.Shutdown(SocketShutdown.Both);
+                clientSocket.Dispose();
+                clientSocket = new Socket(localEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+
                 StartConnect();
             }
         }
@@ -63,8 +73,37 @@ namespace ClientProgram
                 return;
             }
 
-            SendMessage("Connect Complete!");
+            Init_Send_Receive();
+
             Console.WriteLine("Server Connect Complete!");
+        }
+
+        private void Init_Send_Receive()
+        {
+            // 데이터 송신을 위한 SocketAsyncEventArgs 객체 생성
+            sendArgs = new SocketAsyncEventArgs();
+            sendArgs.Completed += IO_Completed;
+            SendMessage("Connect Complete!");
+
+            // 데이터 수신을 위한 SocketAsyncEventArgs 객체 생성
+            receiveArgs = new SocketAsyncEventArgs();
+            receiveArgs.SetBuffer(new byte[1024], 0, 1024);
+            receiveArgs.Completed += IO_Completed;
+
+            // 비동기 데이터 수신
+            if (!clientSocket.ReceiveAsync(receiveArgs))
+            {
+                // 서버 연결 오류 시
+                if (receiveArgs.SocketError != SocketError.Success || receiveArgs.BytesTransferred == 0)
+                {
+                    Console.WriteLine("서버 연결 시도중 . . .");
+                    StartConnect();
+
+                    return;
+                }
+
+                ProcessReceive(receiveArgs);
+            }
         }
 
         // 데이터 송수신 완료 시 실행될 이벤트 함수
@@ -89,16 +128,13 @@ namespace ClientProgram
             // 입력받은 메시지를 byte 배열로 변환
             byte[] messageBuffer = Encoding.UTF8.GetBytes(message);
 
-            // 데이터 송수신을 위한 SocketAsyncEventArgs 객체 생성
-            SocketAsyncEventArgs IOEventArgs = new SocketAsyncEventArgs();
-            IOEventArgs.SetBuffer(messageBuffer, 0, messageBuffer.Length);
-            IOEventArgs.Completed += IO_Completed;
-            
+            sendArgs.SetBuffer(messageBuffer, 0, messageBuffer.Length);
+
             // 비동기 데이터 전송 작업
-            if (!clientSocket.SendAsync(IOEventArgs))
+            if (!clientSocket.SendAsync(sendArgs))
             {
                 // 서버 연결 오류 시
-                if (IOEventArgs.SocketError != SocketError.Success || IOEventArgs.BytesTransferred == 0)
+                if (sendArgs.SocketError != SocketError.Success || sendArgs.BytesTransferred == 0)
                 {
                     Console.WriteLine("서버 연결 시도중 . . .");
                     StartConnect();
@@ -106,7 +142,7 @@ namespace ClientProgram
                     return;
                 }
 
-                ProcessSend(IOEventArgs);
+                ProcessSend(sendArgs);
             }
         }
 
@@ -119,24 +155,6 @@ namespace ClientProgram
             }
 
             Console.WriteLine($"서버에 전송한 메시지: {Encoding.UTF8.GetString(e.Buffer, 0, e.BytesTransferred)}");
-
-            // 데이터 수신을 위한 버퍼 설정
-            e.SetBuffer(new byte[1024], 0, 1024);
-
-            // 비동기 데이터 수신
-            if (!clientSocket.ReceiveAsync(e))
-            {
-                // 서버 연결 오류 시
-                if (e.SocketError != SocketError.Success || e.BytesTransferred == 0)
-                {
-                    Console.WriteLine("서버 연결 시도중 . . .");
-                    StartConnect();
-
-                    return;
-                }
-
-                ProcessReceive(e);
-            }
         }
 
         private void ProcessReceive(SocketAsyncEventArgs e)
@@ -159,16 +177,14 @@ namespace ClientProgram
             }
         }
 
-        private void CloseClientSocket(SocketAsyncEventArgs e)
+        public void CloseClientSocket()
         {
-            Socket socket = (Socket)e.UserToken;
-
             try
             {
-                socket.Shutdown(SocketShutdown.Send);
+                clientSocket.Shutdown(SocketShutdown.Send);
             }
             catch (Exception) { }
-            socket.Close();
+            clientSocket.Close();
         }
     }
 }
