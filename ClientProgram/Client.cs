@@ -20,9 +20,6 @@ namespace ClientProgram
 
         public void Start(IPEndPoint LocalEndPoint)
         {
-            // 클라이언트 소켓 초기화
-            clientSocket = new Socket(LocalEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-
             // Endpoint 설정
             localEndPoint = LocalEndPoint;
 
@@ -35,27 +32,21 @@ namespace ClientProgram
             try
             {
                 // 서버 Connect 를 위한 SocketAsyncEventArgs 객체 초기화
+                connectArgs = null;
                 connectArgs = new SocketAsyncEventArgs();
                 connectArgs.Completed += new EventHandler<SocketAsyncEventArgs>(ConnectEventArg_Completed);
                 connectArgs.RemoteEndPoint = localEndPoint;
 
+                // 클라이언트 소켓 초기화
+                clientSocket = new Socket(localEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+
                 // 서버 연결 시도. 바로 연결 시 false 반환, 지연 시 true 반환
-                bool willRaiseEvent = clientSocket.ConnectAsync(connectArgs);
-                if (!willRaiseEvent)
-                {
-                    Init_Send_Receive();
-                    SendMessage("Connect Complete!");
-                    Console.WriteLine("Server Connect Complete!");
-                }
+                Reconnect_Server();
             }
             catch (Exception ex) 
             {
                 Console.WriteLine(ex.Message);
                 Thread.Sleep(1000);
-
-                clientSocket.Shutdown(SocketShutdown.Both);
-                clientSocket.Dispose();
-                clientSocket = new Socket(localEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 
                 StartConnect();
             }
@@ -67,8 +58,7 @@ namespace ClientProgram
             // 서버 연결 오류 시
             if (e.SocketError != SocketError.Success)
             {
-                Console.WriteLine("서버 연결 시도중 . . .");
-                StartConnect();
+                Reconnect_Server();
 
                 return;
             }
@@ -96,8 +86,7 @@ namespace ClientProgram
                 // 서버 연결 오류 시
                 if (receiveArgs.SocketError != SocketError.Success || receiveArgs.BytesTransferred == 0)
                 {
-                    Console.WriteLine("서버 연결 시도중 . . .");
-                    StartConnect();
+                    Reconnect_Server();
 
                     return;
                 }
@@ -130,14 +119,20 @@ namespace ClientProgram
 
             sendArgs.SetBuffer(messageBuffer, 0, messageBuffer.Length);
 
+            if(clientSocket.Connected == false)
+            {
+                Reconnect_Server();
+
+                return;
+            }
+
             // 비동기 데이터 전송 작업
             if (!clientSocket.SendAsync(sendArgs))
             {
                 // 서버 연결 오류 시
                 if (sendArgs.SocketError != SocketError.Success || sendArgs.BytesTransferred == 0)
                 {
-                    Console.WriteLine("서버 연결 시도중 . . .");
-                    StartConnect();
+                    Reconnect_Server();
 
                     return;
                 }
@@ -172,8 +167,29 @@ namespace ClientProgram
             }
             else
             {
+                Reconnect_Server();
+            }
+        }
+
+        object reconnectLock = new object();
+
+        private void Reconnect_Server()
+        {
+            try
+            {
                 Console.WriteLine("서버와 연결중 . . .");
-                StartConnect();
+
+                Thread.Sleep(1000);
+
+                bool willRaiseEvent = clientSocket.ConnectAsync(connectArgs);
+                if (!willRaiseEvent)
+                {
+                    Init_Send_Receive();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("서버 연결 중 오류 발생 : " + e.Message);
             }
         }
 
