@@ -33,22 +33,20 @@ namespace ClientProgram
             {
                 // 서버 Connect 를 위한 SocketAsyncEventArgs 객체 초기화
                 connectArgs = null;
+
                 connectArgs = new SocketAsyncEventArgs();
                 connectArgs.Completed += new EventHandler<SocketAsyncEventArgs>(ConnectEventArg_Completed);
                 connectArgs.RemoteEndPoint = localEndPoint;
 
-                // 클라이언트 소켓 초기화
-                clientSocket = new Socket(localEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-
                 // 서버 연결 시도. 바로 연결 시 false 반환, 지연 시 true 반환
-                Reconnect_Server();
+                Connect_Server();
             }
             catch (Exception ex) 
             {
                 Console.WriteLine(ex.Message);
                 Thread.Sleep(1000);
 
-                StartConnect();
+                Connect_Server();
             }
         }
 
@@ -58,7 +56,7 @@ namespace ClientProgram
             // 서버 연결 오류 시
             if (e.SocketError != SocketError.Success)
             {
-                Reconnect_Server();
+                Connect_Server();
 
                 return;
             }
@@ -68,12 +66,41 @@ namespace ClientProgram
             Console.WriteLine("Server Connect Complete!");
         }
 
+        // 서버 연결 시도 함수
+        private void Connect_Server()
+        {
+            try
+            {
+                Console.WriteLine("Connect Server . . .");
+
+                Thread.Sleep(1000);
+
+                if (clientSocket != null)
+                {
+                    clientSocket.Close();
+                }
+
+                // 클라이언트 소켓 초기화
+                clientSocket = new Socket(localEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+
+                bool willRaiseEvent = clientSocket.ConnectAsync(connectArgs);
+                if (!willRaiseEvent)
+                {
+                    Init_Send_Receive();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error occurred in Server Connecting : " + e.Message);
+            }
+        }
+
         private void Init_Send_Receive()
         {
             // 데이터 송신을 위한 SocketAsyncEventArgs 객체 생성
             sendArgs = new SocketAsyncEventArgs();
             sendArgs.Completed += IO_Completed;
-            SendMessage("Connect Complete!");
+            SendMessage("Client Connect Complete!");
 
             // 데이터 수신을 위한 SocketAsyncEventArgs 객체 생성
             receiveArgs = new SocketAsyncEventArgs();
@@ -86,7 +113,7 @@ namespace ClientProgram
                 // 서버 연결 오류 시
                 if (receiveArgs.SocketError != SocketError.Success || receiveArgs.BytesTransferred == 0)
                 {
-                    Reconnect_Server();
+                    Connect_Server();
 
                     return;
                 }
@@ -114,17 +141,16 @@ namespace ClientProgram
         // 메시지 입력 시 서버로 메시지 전송
         public void SendMessage(string message)
         {
-            // 입력받은 메시지를 byte 배열로 변환
-            byte[] messageBuffer = Encoding.UTF8.GetBytes(message);
-
-            sendArgs.SetBuffer(messageBuffer, 0, messageBuffer.Length);
-
             if(clientSocket.Connected == false)
             {
-                Reconnect_Server();
+                Console.WriteLine("Unable Connect to Server : " + message);
 
                 return;
             }
+
+            // 입력받은 메시지를 byte 배열로 변환
+            byte[] messageBuffer = Encoding.UTF8.GetBytes(message);
+            sendArgs.SetBuffer(messageBuffer, 0, messageBuffer.Length);
 
             // 비동기 데이터 전송 작업
             if (!clientSocket.SendAsync(sendArgs))
@@ -132,7 +158,7 @@ namespace ClientProgram
                 // 서버 연결 오류 시
                 if (sendArgs.SocketError != SocketError.Success || sendArgs.BytesTransferred == 0)
                 {
-                    Reconnect_Server();
+                    Connect_Server();
 
                     return;
                 }
@@ -145,11 +171,11 @@ namespace ClientProgram
         {
             if (e.SocketError != SocketError.Success)
             {
-                Console.WriteLine("메시지 전송 중 오류 발생.");
+                Console.WriteLine("Error occurred in Sending Message to Server");
                 return;
             }
 
-            Console.WriteLine($"서버에 전송한 메시지: {Encoding.UTF8.GetString(e.Buffer, 0, e.BytesTransferred)}");
+            Console.WriteLine($"Send Message : {Encoding.UTF8.GetString(e.Buffer, 0, e.BytesTransferred)}");
         }
 
         private void ProcessReceive(SocketAsyncEventArgs e)
@@ -167,39 +193,22 @@ namespace ClientProgram
             }
             else
             {
-                Reconnect_Server();
+                Connect_Server();
             }
         }
 
-        object reconnectLock = new object();
-
-        private void Reconnect_Server()
-        {
-            try
-            {
-                Console.WriteLine("서버와 연결중 . . .");
-
-                Thread.Sleep(1000);
-
-                bool willRaiseEvent = clientSocket.ConnectAsync(connectArgs);
-                if (!willRaiseEvent)
-                {
-                    Init_Send_Receive();
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("서버 연결 중 오류 발생 : " + e.Message);
-            }
-        }
-
+        // 소켓 연결 해제
         public void CloseClientSocket()
         {
             try
             {
                 clientSocket.Shutdown(SocketShutdown.Send);
             }
-            catch (Exception) { }
+            catch (Exception e) 
+            { 
+                Console.WriteLine("Socket Error : " + e.Message);
+            }
+
             clientSocket.Close();
         }
     }

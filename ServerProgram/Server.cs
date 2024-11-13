@@ -12,6 +12,7 @@ namespace ServerProgram
     internal class Server
     {
         private int connectionCount;
+
         Socket serverSocket;
                 
         Semaphore maxNumberAcceptedClients;
@@ -22,10 +23,13 @@ namespace ServerProgram
 
         public Server(int numConnections, MainForm mainForm)
         {
+            // 최대 클라이언트 수
             connectionCount = numConnections;
 
+            // 클라이언트 수 제어를 위한 Semaphore 객체 생성
             maxNumberAcceptedClients = new Semaphore(numConnections, numConnections);
 
+            // 메시지 표시를 위한 Form 객체
             this.mainForm = mainForm;
         }
 
@@ -74,11 +78,13 @@ namespace ServerProgram
         {
             ProcessAccept(e);
 
+            // 다수의 클라이언트 연결을 위해 연결 수신 작업 재시작
             StartAccept();
         }
 
         private void ProcessAccept(SocketAsyncEventArgs e)
         {
+            // Accept 작업을 진행했던 소켓 정보를 획득
             Socket ClientSocket = e.AcceptSocket;
 
             // 클라이언트 연결 오류 시
@@ -91,15 +97,18 @@ namespace ServerProgram
             // 서버 UI 에 클라이언트 연결 성공 메시지 추가
             mainForm.Update_Message(DateTime.Now.ToString(), "Client Connected! - " + ClientSocket.RemoteEndPoint);
 
-            // readEventArgs 객체의 버퍼를 설정. 1024 바이트만큼 미리 할당. 이후 ReceiveAsync 을 통해 수신된 데이터를 저장할 버퍼.
+            // ReceiveEventArgs 객체의 버퍼를 설정. 1024 바이트만큼 미리 할당. 이후 ReceiveAsync 을 통해 수신된 데이터를 저장할 버퍼.
             SocketAsyncEventArgs ReceiveEventArg = new SocketAsyncEventArgs();
             ReceiveEventArg.Completed += new EventHandler<SocketAsyncEventArgs>(IO_Completed);
             ReceiveEventArg.SetBuffer(new byte[1024], 0, 1024);
             ReceiveEventArg.UserToken = ClientSocket;
 
+            // SendEventArgs 객체의 버퍼를 설정. 메시지 Send 시 메시지의 크기 만큼을 버퍼로 할당. 
             SocketAsyncEventArgs SendEventArg = new SocketAsyncEventArgs();
             SendEventArg.Completed += new EventHandler<SocketAsyncEventArgs>(IO_Completed);
             SendEventArg.UserToken = ClientSocket;
+
+            // 클라이언트 소켓 관리를 위해 Dictionary 로 관리. Key 값은 Socket 이며, Value 는 SocketAsyncEventArgs 으로 설정
             sendArgsCollection.Add(ClientSocket, SendEventArg);
 
             // 비동기 수신 시작
@@ -176,8 +185,7 @@ namespace ServerProgram
             }
             else
             {
-                CloseClientSocket(e);
-                
+                CloseClientSocket(e);                
             }
         }
 
