@@ -18,10 +18,17 @@ namespace ClientProgram
         private SocketAsyncEventArgs sendArgs;
         private SocketAsyncEventArgs receiveArgs;
 
-        public void Start(IPEndPoint LocalEndPoint)
+        MainForm mainForm;
+
+        bool IsSend_ConnectMessage = false;
+
+        public void Start(IPEndPoint LocalEndPoint, MainForm NewMainForm)
         {
             // Endpoint 설정
             localEndPoint = LocalEndPoint;
+
+            // 메시지 표시를 위한 Mainform 객체
+            mainForm = NewMainForm;
 
             // 서버 연결 시작
             StartConnect();
@@ -101,6 +108,7 @@ namespace ClientProgram
             sendArgs = new SocketAsyncEventArgs();
             sendArgs.Completed += IO_Completed;
             SendMessage("Client Connect Complete!");
+            IsSend_ConnectMessage = true;
 
             // 데이터 수신을 위한 SocketAsyncEventArgs 객체 생성
             receiveArgs = new SocketAsyncEventArgs();
@@ -180,10 +188,15 @@ namespace ClientProgram
 
         private void ProcessReceive(SocketAsyncEventArgs e)
         {
+            if(IsSend_ConnectMessage ==  false)
+            {
+                return;
+            }
+
             if (e.BytesTransferred > 0 && e.SocketError == SocketError.Success)
             {
                 string message = Encoding.UTF8.GetString(e.Buffer, 0, e.BytesTransferred);
-                Console.WriteLine(message);
+                mainForm.Update_ReceiveMessage(message);
 
                 // 계속해서 데이터 수신
                 if (!clientSocket.ReceiveAsync(e))

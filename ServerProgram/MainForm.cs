@@ -18,6 +18,7 @@ namespace ServerProgram
     public partial class MainForm : Form
     {
         Server server;
+        bool IsStartServer = false;
 
         public MainForm()
         {
@@ -67,10 +68,14 @@ namespace ServerProgram
             this.button_Stop.BackColor = SystemColors.Control;
             this.button_Stop.ForeColor = Color.Black;
 
-            Create_Server();
+            if(IsStartServer == false)
+            {
+                IsStartServer = true;
 
-            IPEndPoint EndPoint = new IPEndPoint(IPAddress.Any, 5000);
-            server.Start(EndPoint);
+                Create_Server();
+                IPEndPoint EndPoint = new IPEndPoint(IPAddress.Any, 5000);
+                server.Start(EndPoint);
+            }            
         }
 
         private void button_Stop_Click(object sender, EventArgs e)
@@ -80,8 +85,10 @@ namespace ServerProgram
             this.button_Stop.BackColor = Color.Red;
             this.button_Stop.ForeColor = Color.WhiteSmoke;
 
-            if(server is not null)
+            if (IsStartServer == true)
             {
+                IsStartServer = false;
+
                 server.CloseAllClientSocket();
             }            
         }

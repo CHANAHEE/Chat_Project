@@ -21,25 +21,25 @@ namespace ServerProgram
 
         Dictionary<Socket, SocketAsyncEventArgs> sendArgsCollection = new Dictionary<Socket, SocketAsyncEventArgs>();
 
-        public Server(int numConnections, MainForm mainForm)
+        public Server(int NumConnections, MainForm NewMainForm)
         {
             // 최대 클라이언트 수
-            connectionCount = numConnections;
+            connectionCount = NumConnections;
 
             // 클라이언트 수 제어를 위한 Semaphore 객체 생성
-            maxNumberAcceptedClients = new Semaphore(numConnections, numConnections);
+            maxNumberAcceptedClients = new Semaphore(NumConnections, NumConnections);
 
             // 메시지 표시를 위한 Form 객체
-            this.mainForm = mainForm;
+            this.mainForm = NewMainForm;
         }
 
-        public void Start(IPEndPoint localEndPoint)
+        public void Start(IPEndPoint LocalEndPoint)
         {
             // 소켓 생성
-            serverSocket = new Socket(localEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+            serverSocket = new Socket(LocalEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
             
             // 소켓 바인딩 (소켓이 수신할 IP 주소 및 포트 설정)
-            serverSocket.Bind(localEndPoint);
+            serverSocket.Bind(LocalEndPoint);
 
             // 소켓 리스닝 (소켓 수신대기 및 갯수 설정)
             serverSocket.Listen(100);
@@ -87,8 +87,14 @@ namespace ServerProgram
             // Accept 작업을 진행했던 소켓 정보를 획득
             Socket ClientSocket = e.AcceptSocket;
 
+            if(ClientSocket == null)
+            {
+                mainForm.Update_Message(DateTime.Now.ToString(), "ClientSocket is Null");
+                return;
+            }
+
             // 클라이언트 연결 오류 시
-            if(ClientSocket.Connected == false || ClientSocket == null)
+            if(ClientSocket.Connected == false)
             {
                 CloseClientSocket(e);
                 return;
@@ -216,20 +222,20 @@ namespace ServerProgram
                 sendArgsCollection.Remove(socket);
             }
 
-            string EndPoint = "";
-
             try
             {
-                EndPoint = ((Socket)e.UserToken).RemoteEndPoint.ToString();
+                string EndPoint = ((Socket)e.UserToken).RemoteEndPoint.ToString();
                 socket.Shutdown(SocketShutdown.Send);
-            }
-            catch (Exception) { }
-            socket.Close();
+                socket.Close();
+                e.Dispose();
+                maxNumberAcceptedClients.Close();
 
-            mainForm.Update_Message(DateTime.Now.ToString(), "Client DisConnected! - " + EndPoint);
-            
-            e.Dispose();
-            maxNumberAcceptedClients.Release();
+                mainForm.Update_Message(DateTime.Now.ToString(), "Client DisConnected! - " + EndPoint);
+            }
+            catch (Exception error) 
+            {
+                Console.WriteLine("Error Occurred : " + error.Message);
+            }   
         }
 
         public void CloseAllClientSocket()
@@ -244,19 +250,25 @@ namespace ServerProgram
                     return;
                 }
 
-                string EndPoint = "";
+                if (sendArgsCollection.ContainsKey(socket))
+                {
+                    sendArgsCollection.Remove(socket);
+                }
 
                 try
                 {
-                    EndPoint = ((Socket)e.Value.UserToken).RemoteEndPoint.ToString();
+                    string EndPoint = ((Socket)e.Value.UserToken).RemoteEndPoint.ToString();
                     socket.Shutdown(SocketShutdown.Send);
-                }
-                catch (Exception) { }
+                    socket.Close();
+                    e.Value.Dispose();
+                    maxNumberAcceptedClients.Close();
 
-                socket.Close();                
-                e.Value.Dispose();
-                maxNumberAcceptedClients.Release();
-                mainForm.Update_Message(DateTime.Now.ToString(), "Client DisConnected! - " + EndPoint);
+                    mainForm.Update_Message(DateTime.Now.ToString(), "Client DisConnected! - " + EndPoint);
+                }
+                catch (Exception error)
+                {
+                    Console.WriteLine("Error Occurred : " + error.Message);
+                }
             }
 
             serverSocket.Close();

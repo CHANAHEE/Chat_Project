@@ -3,7 +3,6 @@ D:\Private\ChatProgram\ChatProgram\ClientProgram\bin\x64\Debug\net8.0-windows\Cl
 D:\Private\ChatProgram\ChatProgram\ClientProgram\bin\x64\Debug\net8.0-windows\ClientProgram.runtimeconfig.json
 D:\Private\ChatProgram\ChatProgram\ClientProgram\bin\x64\Debug\net8.0-windows\ClientProgram.dll
 D:\Private\ChatProgram\ChatProgram\ClientProgram\bin\x64\Debug\net8.0-windows\ClientProgram.pdb
-D:\Private\ChatProgram\ChatProgram\ClientProgram\obj\x64\Debug\net8.0-windows\ClientProgram.MessageControl.resources
 D:\Private\ChatProgram\ChatProgram\ClientProgram\obj\x64\Debug\net8.0-windows\ClientProgram.csproj.GenerateResource.cache
 D:\Private\ChatProgram\ChatProgram\ClientProgram\obj\x64\Debug\net8.0-windows\ClientProgram.GeneratedMSBuildEditorConfig.editorconfig
 D:\Private\ChatProgram\ChatProgram\ClientProgram\obj\x64\Debug\net8.0-windows\ClientProgram.AssemblyInfoInputs.cache
@@ -34,3 +33,5 @@ D:\Project\ChatProject\ClientProgram\obj\x64\Debug\net8.0-windows\refint\ClientP
 D:\Project\ChatProject\ClientProgram\obj\x64\Debug\net8.0-windows\ClientProgram.pdb
 D:\Project\ChatProject\ClientProgram\obj\x64\Debug\net8.0-windows\ClientProgram.genruntimeconfig.cache
 D:\Project\ChatProject\ClientProgram\obj\x64\Debug\net8.0-windows\ref\ClientProgram.dll
+D:\Private\ChatProgram\ChatProgram\ClientProgram\obj\x64\Debug\net8.0-windows\ClientProgram.ReceiveMessageControl.resources
+D:\Private\ChatProgram\ChatProgram\ClientProgram\obj\x64\Debug\net8.0-windows\ClientProgram.SendMessageControl.resources

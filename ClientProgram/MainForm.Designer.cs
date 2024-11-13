@@ -54,6 +54,7 @@
             // button_Send
             // 
             button_Send.Dock = DockStyle.Fill;
+            button_Send.Enabled = false;
             button_Send.Location = new Point(728, 3);
             button_Send.Name = "button_Send";
             button_Send.Size = new Size(69, 38);
@@ -71,10 +72,12 @@
             richTextBox_Message.TabIndex = 1;
             richTextBox_Message.Text = "";
             richTextBox_Message.KeyDown += richTextBox_Message_KeyDown;
+            richTextBox_Message.KeyUp += richTextBox_Message_KeyUp;
             // 
             // flowLayoutPanel_Message
             // 
             flowLayoutPanel_Message.AutoScroll = true;
+            flowLayoutPanel_Message.BackColor = SystemColors.ActiveCaption;
             flowLayoutPanel_Message.Dock = DockStyle.Fill;
             flowLayoutPanel_Message.Location = new Point(0, 0);
             flowLayoutPanel_Message.Name = "flowLayoutPanel_Message";

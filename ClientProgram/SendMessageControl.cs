@@ -11,14 +11,14 @@ using System.Windows.Forms;
 
 namespace ClientProgram
 {
-    public partial class MessageControl : UserControl
+    public partial class SendMessageControl : UserControl
     {
-        public MessageControl(string Message, DateTime Time)
+        public SendMessageControl(string Message, DateTime SendTime)
         {
             InitializeComponent();
 
-            this.label_Message.Text = Message;
-            string FormattedTime = Time.ToString("tt h:mm", CultureInfo.CurrentCulture);
+            this.label_SendMessage.Text = Message;
+            string FormattedTime = SendTime.ToString("tt h:mm", CultureInfo.CurrentCulture);
 
             this.label_SendTime.Text = FormattedTime.Replace("AM","오전").Replace("PM", "오후");
         }

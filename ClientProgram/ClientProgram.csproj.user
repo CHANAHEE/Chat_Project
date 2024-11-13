@@ -4,7 +4,10 @@
     <Compile Update="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="MessageControl.cs">
+    <Compile Update="ReceiveMessageControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="SendMessageControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
   </ItemGroup>

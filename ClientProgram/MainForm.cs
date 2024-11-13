@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Net;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 
 namespace ClientProgram
 {
@@ -25,17 +26,28 @@ namespace ClientProgram
             // 서버로 보내기
             client.SendMessage(this.richTextBox_Message.Text);
 
-            this.flowLayoutPanel_Message.Controls.Add(new MessageControl(this.richTextBox_Message.Text, DateTime.Now));
+            this.flowLayoutPanel_Message.Controls.Add(new SendMessageControl(this.richTextBox_Message.Text, DateTime.Now));
 
             this.richTextBox_Message.Clear();
         }
 
+        public void Update_ReceiveMessage(string Message)
+        {
+            if (this.flowLayoutPanel_Message.InvokeRequired)
+            {
+                this.flowLayoutPanel_Message.Invoke(new MethodInvoker(delegate ()
+                {
+                    this.flowLayoutPanel_Message.Controls.Add(new ReceiveMessageControl(Message, DateTime.Now));
+                }));
+            }
+            else
+            {
+                this.flowLayoutPanel_Message.Controls.Add(new ReceiveMessageControl(Message, DateTime.Now));
+            }
+        }
+
         private void richTextBox_Message_KeyDown(object sender, KeyEventArgs e)
         {
-            //if (e.KeyCode == Keys.Enter && e.Shift)
-            //{
-
-            //}
             if (e.KeyCode == Keys.Enter)
             {
                 e.Handled = true;
@@ -51,7 +63,19 @@ namespace ClientProgram
 
             // 서버 연결
             IPEndPoint EndPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 5000);
-            client.Start(EndPoint);
+            client.Start(EndPoint, this);
+        }
+
+        private void richTextBox_Message_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (this.richTextBox_Message.Text == string.Empty)
+            {
+                this.button_Send.Enabled = false;
+            }
+            else
+            {
+                this.button_Send.Enabled = true;
+            }
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace ClientProgram
 {
-    partial class MessageControl
+    partial class SendMessageControl
     {
         /// <summary> 
         /// 필수 디자이너 변수입니다.
@@ -28,22 +28,22 @@
         /// </summary>
         private void InitializeComponent()
         {
-            label_Message = new Label();
+            label_SendMessage = new Label();
             label_SendTime = new Label();
             SuspendLayout();
             // 
-            // label_Message
+            // label_SendMessage
             // 
-            label_Message.AutoSize = true;
-            label_Message.BackColor = Color.Gold;
-            label_Message.Dock = DockStyle.Right;
-            label_Message.Location = new Point(663, 0);
-            label_Message.MaximumSize = new Size(250, 0);
-            label_Message.Name = "label_Message";
-            label_Message.Padding = new Padding(10);
-            label_Message.Size = new Size(107, 35);
-            label_Message.TabIndex = 2;
-            label_Message.Text = "label1label1lab";
+            label_SendMessage.AutoSize = true;
+            label_SendMessage.BackColor = Color.Gold;
+            label_SendMessage.Dock = DockStyle.Right;
+            label_SendMessage.Location = new Point(663, 0);
+            label_SendMessage.MaximumSize = new Size(250, 0);
+            label_SendMessage.Name = "label_SendMessage";
+            label_SendMessage.Padding = new Padding(10);
+            label_SendMessage.Size = new Size(107, 35);
+            label_SendMessage.TabIndex = 2;
+            label_SendMessage.Text = "label1label1lab";
             // 
             // label_SendTime
             // 
@@ -61,20 +61,21 @@
             label_SendTime.Text = "오후 10:30";
             label_SendTime.TextAlign = ContentAlignment.BottomRight;
             // 
-            // MessageControl
+            // SendMessageControl
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.Transparent;
             Controls.Add(label_SendTime);
-            Controls.Add(label_Message);
-            Name = "MessageControl";
+            Controls.Add(label_SendMessage);
+            Name = "SendMessageControl";
             Size = new Size(770, 35);
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
-        private Label label_Message;
+        private Label label_SendMessage;
         private Label label_SendTime;
     }
 }
