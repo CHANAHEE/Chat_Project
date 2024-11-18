@@ -20,7 +20,7 @@ namespace ClientProgram
 
         MainForm mainForm;
 
-        bool IsSend_ConnectMessage = false;
+        bool IsCreate_SendArgs = false;
 
         public void Start(IPEndPoint LocalEndPoint, MainForm NewMainForm)
         {
@@ -107,8 +107,7 @@ namespace ClientProgram
             // 데이터 송신을 위한 SocketAsyncEventArgs 객체 생성
             sendArgs = new SocketAsyncEventArgs();
             sendArgs.Completed += IO_Completed;
-            SendMessage("Client Connect Complete!");
-            IsSend_ConnectMessage = true;
+            IsCreate_SendArgs = true;
 
             // 데이터 수신을 위한 SocketAsyncEventArgs 객체 생성
             receiveArgs = new SocketAsyncEventArgs();
@@ -188,7 +187,7 @@ namespace ClientProgram
 
         private void ProcessReceive(SocketAsyncEventArgs e)
         {
-            if(IsSend_ConnectMessage ==  false)
+            if(IsCreate_SendArgs ==  false)
             {
                 return;
             }

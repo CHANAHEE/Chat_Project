@@ -8,11 +8,18 @@ namespace ClientProgram
     {
         Client client;
 
+        TableLayoutPanel tableLayoutPanel_Message;
+
         public MainForm()
         {
             InitializeComponent();
+            this.tableLayoutPanel_Message = new TableLayoutPanel();
+            tableLayoutPanel_Message.RowCount = 1;
+            tableLayoutPanel_Message.ColumnCount = 1;
+            this.tableLayoutPanel_Message.HorizontalScroll.Visible = false;
+            this.tableLayoutPanel_Message.RowStyles.Add(new RowStyle(SizeType.Absolute, 10));
 
-            this.flowLayoutPanel_Message.HorizontalScroll.Visible = false;
+            this.Controls.Add(tableLayoutPanel_Message);
         }
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
@@ -26,23 +33,41 @@ namespace ClientProgram
             // 서버로 보내기
             client.SendMessage(this.richTextBox_Message.Text);
 
-            this.flowLayoutPanel_Message.Controls.Add(new SendMessageControl(this.richTextBox_Message.Text, DateTime.Now));
+            SendMessageControl NewSendMessage = new SendMessageControl(this.richTextBox_Message.Text, DateTime.Now);
+            //NewSendMessage.AutoSize = true;
+            //NewSendMessage.Dock = DockStyle.None;
+            NewSendMessage.Height = 10;
+            this.tableLayoutPanel_Message.Controls.Add(NewSendMessage);
+            
 
+            this.button_Send.Enabled = false;
             this.richTextBox_Message.Clear();
         }
 
         public void Update_ReceiveMessage(string Message)
         {
-            if (this.flowLayoutPanel_Message.InvokeRequired)
+            if (this.tableLayoutPanel_Message.InvokeRequired)
             {
-                this.flowLayoutPanel_Message.Invoke(new MethodInvoker(delegate ()
+                this.tableLayoutPanel_Message.Invoke(new MethodInvoker(delegate ()
                 {
-                    this.flowLayoutPanel_Message.Controls.Add(new ReceiveMessageControl(Message, DateTime.Now));
+                    ReceiveMessageControl NewRecvMessage = new ReceiveMessageControl(Message, DateTime.Now);
+                    NewRecvMessage.Width = this.Parent.Width;
+                    NewRecvMessage.Height = 50;
+                    NewRecvMessage.Dock = DockStyle.Fill;
+                    NewRecvMessage.AutoSize = true;
+                    this.tableLayoutPanel_Message.Controls.Add(NewRecvMessage);
+
                 }));
             }
             else
             {
-                this.flowLayoutPanel_Message.Controls.Add(new ReceiveMessageControl(Message, DateTime.Now));
+                ReceiveMessageControl NewRecvMessage = new ReceiveMessageControl(Message, DateTime.Now);
+                NewRecvMessage.Width = this.Parent.Width;
+                NewRecvMessage.Height = 50;
+                NewRecvMessage.Dock = DockStyle.Fill;
+                NewRecvMessage.AutoSize = true;
+                this.tableLayoutPanel_Message.Controls.Add(NewRecvMessage);
+
             }
         }
 

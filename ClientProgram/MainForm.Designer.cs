@@ -31,7 +31,6 @@
             tableLayoutPanel1 = new TableLayoutPanel();
             button_Send = new Button();
             richTextBox_Message = new RichTextBox();
-            flowLayoutPanel_Message = new FlowLayoutPanel();
             tableLayoutPanel1.SuspendLayout();
             SuspendLayout();
             // 
@@ -74,22 +73,11 @@
             richTextBox_Message.KeyDown += richTextBox_Message_KeyDown;
             richTextBox_Message.KeyUp += richTextBox_Message_KeyUp;
             // 
-            // flowLayoutPanel_Message
-            // 
-            flowLayoutPanel_Message.AutoScroll = true;
-            flowLayoutPanel_Message.BackColor = SystemColors.ActiveCaption;
-            flowLayoutPanel_Message.Dock = DockStyle.Fill;
-            flowLayoutPanel_Message.Location = new Point(0, 0);
-            flowLayoutPanel_Message.Name = "flowLayoutPanel_Message";
-            flowLayoutPanel_Message.Size = new Size(800, 406);
-            flowLayoutPanel_Message.TabIndex = 1;
-            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
-            Controls.Add(flowLayoutPanel_Message);
             Controls.Add(tableLayoutPanel1);
             Name = "MainForm";
             Text = "채팅 프로그램";
@@ -104,6 +92,5 @@
         private TableLayoutPanel tableLayoutPanel1;
         private Button button_Send;
         private RichTextBox richTextBox_Message;
-        private FlowLayoutPanel flowLayoutPanel_Message;
     }
 }

@@ -42,8 +42,8 @@
             label_ReceiveTime.Location = new Point(107, 0);
             label_ReceiveTime.MaximumSize = new Size(250, 0);
             label_ReceiveTime.Name = "label_ReceiveTime";
-            label_ReceiveTime.Padding = new Padding(20, 24, 3, 0);
-            label_ReceiveTime.Size = new Size(65, 35);
+            label_ReceiveTime.Padding = new Padding(4, 24, 3, 0);
+            label_ReceiveTime.Size = new Size(49, 35);
             label_ReceiveTime.TabIndex = 5;
             label_ReceiveTime.Text = "오후 10:30";
             label_ReceiveTime.TextAlign = ContentAlignment.BottomRight;
@@ -65,7 +65,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.Transparent;
+            BackColor = Color.IndianRed;
             Controls.Add(label_ReceiveTime);
             Controls.Add(label_ReceiveMessage);
             Name = "ReceiveMessageControl";

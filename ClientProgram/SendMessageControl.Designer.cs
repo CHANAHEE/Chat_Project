@@ -65,7 +65,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.Transparent;
+            BackColor = Color.Chocolate;
             Controls.Add(label_SendTime);
             Controls.Add(label_SendMessage);
             Name = "SendMessageControl";
