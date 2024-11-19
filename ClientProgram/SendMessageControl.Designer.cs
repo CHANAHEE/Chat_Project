@@ -37,11 +37,12 @@
             label_SendMessage.AutoSize = true;
             label_SendMessage.BackColor = Color.Gold;
             label_SendMessage.Dock = DockStyle.Right;
-            label_SendMessage.Location = new Point(663, 0);
+            label_SendMessage.Location = new Point(658, 5);
+            label_SendMessage.Margin = new Padding(0);
             label_SendMessage.MaximumSize = new Size(250, 0);
             label_SendMessage.Name = "label_SendMessage";
-            label_SendMessage.Padding = new Padding(10);
-            label_SendMessage.Size = new Size(107, 35);
+            label_SendMessage.Padding = new Padding(10, 12, 10, 10);
+            label_SendMessage.Size = new Size(107, 37);
             label_SendMessage.TabIndex = 2;
             label_SendMessage.Text = "label1label1lab";
             // 
@@ -52,11 +53,11 @@
             label_SendTime.Dock = DockStyle.Right;
             label_SendTime.Font = new Font("맑은 고딕", 6F);
             label_SendTime.ForeColor = SystemColors.ControlDarkDark;
-            label_SendTime.Location = new Point(598, 0);
+            label_SendTime.Location = new Point(593, 5);
             label_SendTime.MaximumSize = new Size(250, 0);
             label_SendTime.Name = "label_SendTime";
-            label_SendTime.Padding = new Padding(20, 24, 3, 0);
-            label_SendTime.Size = new Size(65, 35);
+            label_SendTime.Padding = new Padding(20, 20, 3, 0);
+            label_SendTime.Size = new Size(65, 31);
             label_SendTime.TabIndex = 3;
             label_SendTime.Text = "오후 10:30";
             label_SendTime.TextAlign = ContentAlignment.BottomRight;
@@ -69,7 +70,8 @@
             Controls.Add(label_SendTime);
             Controls.Add(label_SendMessage);
             Name = "SendMessageControl";
-            Size = new Size(770, 35);
+            Padding = new Padding(5);
+            Size = new Size(770, 43);
             ResumeLayout(false);
             PerformLayout();
         }

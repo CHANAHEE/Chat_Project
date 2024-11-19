@@ -8,18 +8,14 @@ namespace ClientProgram
     {
         Client client;
 
-        TableLayoutPanel tableLayoutPanel_Message;
-
         public MainForm()
         {
             InitializeComponent();
-            this.tableLayoutPanel_Message = new TableLayoutPanel();
-            tableLayoutPanel_Message.RowCount = 1;
-            tableLayoutPanel_Message.ColumnCount = 1;
-            this.tableLayoutPanel_Message.HorizontalScroll.Visible = false;
-            this.tableLayoutPanel_Message.RowStyles.Add(new RowStyle(SizeType.Absolute, 10));
 
-            this.Controls.Add(tableLayoutPanel_Message);
+            //this.tableLayoutPanel_Message.HorizontalScroll.Visible = false;
+            //this.tableLayoutPanel_Message.RowStyles.Add(new RowStyle(SizeType.Absolute, 10));
+
+            //this.Controls.Add(tableLayoutPanel_Message);
         }
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
@@ -36,9 +32,10 @@ namespace ClientProgram
             SendMessageControl NewSendMessage = new SendMessageControl(this.richTextBox_Message.Text, DateTime.Now);
             //NewSendMessage.AutoSize = true;
             //NewSendMessage.Dock = DockStyle.None;
-            NewSendMessage.Height = 10;
-            this.tableLayoutPanel_Message.Controls.Add(NewSendMessage);
-            
+            //NewSendMessage.Height = 10;
+            //this.tableLayoutPanel_Message.Controls.Add(NewSendMessage);
+            this.panel_Message.Controls.Add(NewSendMessage);
+            NewSendMessage.Dock = DockStyle.Top;
 
             this.button_Send.Enabled = false;
             this.richTextBox_Message.Clear();
@@ -46,29 +43,29 @@ namespace ClientProgram
 
         public void Update_ReceiveMessage(string Message)
         {
-            if (this.tableLayoutPanel_Message.InvokeRequired)
-            {
-                this.tableLayoutPanel_Message.Invoke(new MethodInvoker(delegate ()
-                {
-                    ReceiveMessageControl NewRecvMessage = new ReceiveMessageControl(Message, DateTime.Now);
-                    NewRecvMessage.Width = this.Parent.Width;
-                    NewRecvMessage.Height = 50;
-                    NewRecvMessage.Dock = DockStyle.Fill;
-                    NewRecvMessage.AutoSize = true;
-                    this.tableLayoutPanel_Message.Controls.Add(NewRecvMessage);
+            //if (this.tableLayoutPanel_Message.InvokeRequired)
+            //{
+            //    this.tableLayoutPanel_Message.Invoke(new MethodInvoker(delegate ()
+            //    {
+            //        ReceiveMessageControl NewRecvMessage = new ReceiveMessageControl(Message, DateTime.Now);
+            //        NewRecvMessage.Width = this.Parent.Width;
+            //        NewRecvMessage.Height = 50;
+            //        NewRecvMessage.Dock = DockStyle.Fill;
+            //        NewRecvMessage.AutoSize = true;
+            //        this.tableLayoutPanel_Message.Controls.Add(NewRecvMessage);
 
-                }));
-            }
-            else
-            {
-                ReceiveMessageControl NewRecvMessage = new ReceiveMessageControl(Message, DateTime.Now);
-                NewRecvMessage.Width = this.Parent.Width;
-                NewRecvMessage.Height = 50;
-                NewRecvMessage.Dock = DockStyle.Fill;
-                NewRecvMessage.AutoSize = true;
-                this.tableLayoutPanel_Message.Controls.Add(NewRecvMessage);
+            //    }));
+            //}
+            //else
+            //{
+            //    ReceiveMessageControl NewRecvMessage = new ReceiveMessageControl(Message, DateTime.Now);
+            //    NewRecvMessage.Width = this.Parent.Width;
+            //    NewRecvMessage.Height = 50;
+            //    NewRecvMessage.Dock = DockStyle.Fill;
+            //    NewRecvMessage.AutoSize = true;
+            //    this.tableLayoutPanel_Message.Controls.Add(NewRecvMessage);
 
-            }
+            //}
         }
 
         private void richTextBox_Message_KeyDown(object sender, KeyEventArgs e)
