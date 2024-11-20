@@ -19,20 +19,7 @@ namespace ClientProgram
             client.CloseClientSocket();
             Process.GetCurrentProcess().Kill();
         }
-        private void AdjustScrollBars()
-        {
-            tableLayoutPanel_Message.VerticalScroll.Enabled = true;
-            tableLayoutPanel_Message.VerticalScroll.Visible = true;
-            // 세로 스크롤이 필요한지 확인
-            bool verticalScrollRequired = tableLayoutPanel_Message.VerticalScroll.Visible;
 
-            if (verticalScrollRequired)
-            {
-                // 세로 스크롤이 보일 때 가로 스크롤을 숨깁니다.
-                tableLayoutPanel_Message.HorizontalScroll.Enabled = false;  // 가로 스크롤 비활성화
-                tableLayoutPanel_Message.HorizontalScroll.Visible = false;  // 가로 스크롤 숨김
-            }
-        }
         private void button_Send_Click(object sender, EventArgs e)
         {
             // 서버로 보내기
@@ -48,7 +35,10 @@ namespace ClientProgram
             this.button_Send.Enabled = false;
             this.richTextBox_Message.Clear();
 
-            AdjustScrollBars();
+            if(this.tableLayoutPanel_Message.VerticalScroll.Visible == true)
+            {
+                this.tableLayoutPanel_Message.Padding = new Padding(0, 0, SystemInformation.VerticalScrollBarWidth, 0);
+            }            
         }
 
         public void Update_ReceiveMessage(string Message)
@@ -60,9 +50,13 @@ namespace ClientProgram
                     ReceiveMessageControl NewRecvMessage = new ReceiveMessageControl(Message, DateTime.Now);
                     NewRecvMessage.Dock = DockStyle.Top;
 
-                    this.tableLayoutPanel_Message.RowCount++;
                     this.tableLayoutPanel_Message.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-                    this.tableLayoutPanel_Message.Controls.Add(NewRecvMessage, 0, tableLayoutPanel1.RowCount - 1);
+                    this.tableLayoutPanel_Message.Controls.Add(NewRecvMessage);
+
+                    if (this.tableLayoutPanel_Message.VerticalScroll.Visible == true)
+                    {
+                        this.tableLayoutPanel_Message.Padding = new Padding(0, 0, SystemInformation.VerticalScrollBarWidth, 0);
+                    }
                 }));
             }
             else
@@ -70,15 +64,25 @@ namespace ClientProgram
                 ReceiveMessageControl NewRecvMessage = new ReceiveMessageControl(Message, DateTime.Now);
                 NewRecvMessage.Dock = DockStyle.Top;
 
-                this.tableLayoutPanel_Message.RowCount++;
                 this.tableLayoutPanel_Message.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-                this.tableLayoutPanel_Message.Controls.Add(NewRecvMessage, 0, tableLayoutPanel1.RowCount - 1);
+                this.tableLayoutPanel_Message.Controls.Add(NewRecvMessage);
+
+                if (this.tableLayoutPanel_Message.VerticalScroll.Visible == true)
+                {
+                    this.tableLayoutPanel_Message.Padding = new Padding(0, 0, SystemInformation.VerticalScrollBarWidth, 0);
+                }
             }
         }
 
         private void richTextBox_Message_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter)
+            if (e.Shift && e.KeyCode == Keys.Enter)
+            {
+                e.Handled = true;  
+
+                this.richTextBox_Message.AppendText(Environment.NewLine);                
+            }
+            else if (e.KeyCode == Keys.Enter)
             {
                 e.Handled = true;
 

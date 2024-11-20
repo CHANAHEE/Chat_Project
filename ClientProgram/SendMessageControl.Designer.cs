@@ -37,7 +37,7 @@
             label_SendMessage.AutoSize = true;
             label_SendMessage.BackColor = Color.Gold;
             label_SendMessage.Dock = DockStyle.Right;
-            label_SendMessage.Location = new Point(643, 5);
+            label_SendMessage.Location = new Point(658, 5);
             label_SendMessage.Margin = new Padding(0);
             label_SendMessage.MaximumSize = new Size(250, 0);
             label_SendMessage.Name = "label_SendMessage";
@@ -53,7 +53,7 @@
             label_SendTime.Dock = DockStyle.Right;
             label_SendTime.Font = new Font("맑은 고딕", 6F);
             label_SendTime.ForeColor = SystemColors.ControlDarkDark;
-            label_SendTime.Location = new Point(578, 5);
+            label_SendTime.Location = new Point(593, 5);
             label_SendTime.MaximumSize = new Size(250, 0);
             label_SendTime.Name = "label_SendTime";
             label_SendTime.Padding = new Padding(20, 26, 3, 0);
@@ -70,7 +70,7 @@
             Controls.Add(label_SendTime);
             Controls.Add(label_SendMessage);
             Name = "SendMessageControl";
-            Padding = new Padding(5, 5, 20, 5);
+            Padding = new Padding(5);
             Size = new Size(770, 47);
             ResumeLayout(false);
             PerformLayout();

@@ -76,6 +76,7 @@
             // 
             // tableLayoutPanel_Message
             // 
+            tableLayoutPanel_Message.AutoScroll = true;
             tableLayoutPanel_Message.BackColor = SystemColors.ActiveCaption;
             tableLayoutPanel_Message.ColumnCount = 1;
             tableLayoutPanel_Message.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
