@@ -31,7 +31,7 @@
             tableLayoutPanel1 = new TableLayoutPanel();
             button_Send = new Button();
             richTextBox_Message = new RichTextBox();
-            panel_Message = new Panel();
+            tableLayoutPanel_Message = new TableLayoutPanel();
             tableLayoutPanel1.SuspendLayout();
             SuspendLayout();
             // 
@@ -74,22 +74,25 @@
             richTextBox_Message.KeyDown += richTextBox_Message_KeyDown;
             richTextBox_Message.KeyUp += richTextBox_Message_KeyUp;
             // 
-            // panel_Message
+            // tableLayoutPanel_Message
             // 
-            panel_Message.AutoScroll = true;
-            panel_Message.BackColor = SystemColors.ActiveCaption;
-            panel_Message.Dock = DockStyle.Fill;
-            panel_Message.Location = new Point(0, 0);
-            panel_Message.Name = "panel_Message";
-            panel_Message.Size = new Size(800, 406);
-            panel_Message.TabIndex = 2;
+            tableLayoutPanel_Message.BackColor = SystemColors.ActiveCaption;
+            tableLayoutPanel_Message.ColumnCount = 1;
+            tableLayoutPanel_Message.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            tableLayoutPanel_Message.Dock = DockStyle.Fill;
+            tableLayoutPanel_Message.Location = new Point(0, 0);
+            tableLayoutPanel_Message.Name = "tableLayoutPanel_Message";
+            tableLayoutPanel_Message.RowCount = 1;
+            tableLayoutPanel_Message.RowStyles.Add(new RowStyle());
+            tableLayoutPanel_Message.Size = new Size(800, 406);
+            tableLayoutPanel_Message.TabIndex = 1;
             // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
-            Controls.Add(panel_Message);
+            Controls.Add(tableLayoutPanel_Message);
             Controls.Add(tableLayoutPanel1);
             Name = "MainForm";
             Text = "채팅 프로그램";
@@ -104,6 +107,6 @@
         private TableLayoutPanel tableLayoutPanel1;
         private Button button_Send;
         private RichTextBox richTextBox_Message;
-        private Panel panel_Message;
+        private TableLayoutPanel tableLayoutPanel_Message;
     }
 }

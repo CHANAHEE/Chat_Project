@@ -39,11 +39,11 @@
             label_ReceiveTime.Dock = DockStyle.Left;
             label_ReceiveTime.Font = new Font("맑은 고딕", 6F);
             label_ReceiveTime.ForeColor = SystemColors.ControlDarkDark;
-            label_ReceiveTime.Location = new Point(107, 0);
+            label_ReceiveTime.Location = new Point(112, 5);
             label_ReceiveTime.MaximumSize = new Size(250, 0);
             label_ReceiveTime.Name = "label_ReceiveTime";
-            label_ReceiveTime.Padding = new Padding(4, 24, 3, 0);
-            label_ReceiveTime.Size = new Size(49, 35);
+            label_ReceiveTime.Padding = new Padding(3, 26, 3, 0);
+            label_ReceiveTime.Size = new Size(48, 37);
             label_ReceiveTime.TabIndex = 5;
             label_ReceiveTime.Text = "오후 10:30";
             label_ReceiveTime.TextAlign = ContentAlignment.BottomRight;
@@ -53,11 +53,11 @@
             label_ReceiveMessage.AutoSize = true;
             label_ReceiveMessage.BackColor = Color.WhiteSmoke;
             label_ReceiveMessage.Dock = DockStyle.Left;
-            label_ReceiveMessage.Location = new Point(0, 0);
+            label_ReceiveMessage.Location = new Point(5, 5);
             label_ReceiveMessage.MaximumSize = new Size(250, 0);
             label_ReceiveMessage.Name = "label_ReceiveMessage";
-            label_ReceiveMessage.Padding = new Padding(10);
-            label_ReceiveMessage.Size = new Size(107, 35);
+            label_ReceiveMessage.Padding = new Padding(10, 12, 10, 10);
+            label_ReceiveMessage.Size = new Size(107, 37);
             label_ReceiveMessage.TabIndex = 4;
             label_ReceiveMessage.Text = "label1label1lab";
             // 
@@ -65,11 +65,12 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.IndianRed;
+            BackColor = Color.Transparent;
             Controls.Add(label_ReceiveTime);
             Controls.Add(label_ReceiveMessage);
             Name = "ReceiveMessageControl";
-            Size = new Size(770, 35);
+            Padding = new Padding(5);
+            Size = new Size(770, 47);
             ResumeLayout(false);
             PerformLayout();
         }
