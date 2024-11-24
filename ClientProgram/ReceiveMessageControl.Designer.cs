@@ -28,56 +28,84 @@
         /// </summary>
         private void InitializeComponent()
         {
-            label_ReceiveTime = new Label();
             label_ReceiveMessage = new Label();
+            label_ReceiveTime = new Label();
+            panel1 = new Panel();
+            panel2 = new Panel();
+            panel1.SuspendLayout();
+            panel2.SuspendLayout();
             SuspendLayout();
-            // 
-            // label_ReceiveTime
-            // 
-            label_ReceiveTime.AutoSize = true;
-            label_ReceiveTime.BackColor = Color.Transparent;
-            label_ReceiveTime.Dock = DockStyle.Left;
-            label_ReceiveTime.Font = new Font("맑은 고딕", 6F);
-            label_ReceiveTime.ForeColor = SystemColors.ControlDarkDark;
-            label_ReceiveTime.Location = new Point(112, 5);
-            label_ReceiveTime.MaximumSize = new Size(250, 0);
-            label_ReceiveTime.Name = "label_ReceiveTime";
-            label_ReceiveTime.Padding = new Padding(3, 26, 3, 0);
-            label_ReceiveTime.Size = new Size(48, 37);
-            label_ReceiveTime.TabIndex = 5;
-            label_ReceiveTime.Text = "오후 10:30";
-            label_ReceiveTime.TextAlign = ContentAlignment.BottomRight;
             // 
             // label_ReceiveMessage
             // 
             label_ReceiveMessage.AutoSize = true;
             label_ReceiveMessage.BackColor = Color.WhiteSmoke;
-            label_ReceiveMessage.Dock = DockStyle.Left;
-            label_ReceiveMessage.Location = new Point(5, 5);
+            label_ReceiveMessage.Location = new Point(0, 2);
+            label_ReceiveMessage.Margin = new Padding(0);
             label_ReceiveMessage.MaximumSize = new Size(250, 0);
             label_ReceiveMessage.Name = "label_ReceiveMessage";
-            label_ReceiveMessage.Padding = new Padding(10, 12, 10, 10);
+            label_ReceiveMessage.Padding = new Padding(10, 7, 10, 15);
             label_ReceiveMessage.Size = new Size(107, 37);
-            label_ReceiveMessage.TabIndex = 4;
+            label_ReceiveMessage.TabIndex = 2;
             label_ReceiveMessage.Text = "label1label1lab";
+            // 
+            // label_ReceiveTime
+            // 
+            label_ReceiveTime.BackColor = Color.Transparent;
+            label_ReceiveTime.Dock = DockStyle.Bottom;
+            label_ReceiveTime.Font = new Font("맑은 고딕", 6F);
+            label_ReceiveTime.ForeColor = SystemColors.ControlDarkDark;
+            label_ReceiveTime.Location = new Point(0, 0);
+            label_ReceiveTime.Name = "label_ReceiveTime";
+            label_ReceiveTime.Padding = new Padding(20, 26, 3, 0);
+            label_ReceiveTime.Size = new Size(66, 37);
+            label_ReceiveTime.TabIndex = 3;
+            label_ReceiveTime.Text = "오후 10:30";
+            label_ReceiveTime.TextAlign = ContentAlignment.BottomRight;
+            // 
+            // panel1
+            // 
+            panel1.BackColor = Color.Transparent;
+            panel1.Controls.Add(label_ReceiveTime);
+            panel1.Dock = DockStyle.Left;
+            panel1.Location = new Point(112, 5);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(66, 37);
+            panel1.TabIndex = 6;
+            // 
+            // panel2
+            // 
+            panel2.AutoSize = true;
+            panel2.Controls.Add(label_ReceiveMessage);
+            panel2.Dock = DockStyle.Left;
+            panel2.Location = new Point(5, 5);
+            panel2.Name = "panel2";
+            panel2.Padding = new Padding(0, 0, 0, 5);
+            panel2.Size = new Size(107, 37);
+            panel2.TabIndex = 7;
             // 
             // ReceiveMessageControl
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.Transparent;
-            Controls.Add(label_ReceiveTime);
-            Controls.Add(label_ReceiveMessage);
+            Controls.Add(panel1);
+            Controls.Add(panel2);
             Name = "ReceiveMessageControl";
             Padding = new Padding(5);
             Size = new Size(770, 47);
+            panel1.ResumeLayout(false);
+            panel2.ResumeLayout(false);
+            panel2.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
 
-        private Label label_ReceiveTime;
         private Label label_ReceiveMessage;
+        private Label label_ReceiveTime;
+        private Panel panel1;
+        private Panel panel2;
     }
 }

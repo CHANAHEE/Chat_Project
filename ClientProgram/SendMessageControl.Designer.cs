@@ -30,48 +30,73 @@
         {
             label_SendMessage = new Label();
             label_SendTime = new Label();
+            panel1 = new Panel();
+            panel2 = new Panel();
+            panel1.SuspendLayout();
+            panel2.SuspendLayout();
             SuspendLayout();
             // 
             // label_SendMessage
             // 
             label_SendMessage.AutoSize = true;
             label_SendMessage.BackColor = Color.Gold;
-            label_SendMessage.Dock = DockStyle.Right;
-            label_SendMessage.Location = new Point(658, 5);
+            label_SendMessage.Location = new Point(0, 2);
             label_SendMessage.Margin = new Padding(0);
             label_SendMessage.MaximumSize = new Size(250, 0);
             label_SendMessage.Name = "label_SendMessage";
-            label_SendMessage.Padding = new Padding(10, 12, 10, 10);
+            label_SendMessage.Padding = new Padding(10, 7, 10, 15);
             label_SendMessage.Size = new Size(107, 37);
             label_SendMessage.TabIndex = 2;
             label_SendMessage.Text = "label1label1lab";
             // 
             // label_SendTime
             // 
-            label_SendTime.AutoSize = true;
             label_SendTime.BackColor = Color.Transparent;
-            label_SendTime.Dock = DockStyle.Right;
+            label_SendTime.Dock = DockStyle.Bottom;
             label_SendTime.Font = new Font("맑은 고딕", 6F);
             label_SendTime.ForeColor = SystemColors.ControlDarkDark;
-            label_SendTime.Location = new Point(593, 5);
-            label_SendTime.MaximumSize = new Size(250, 0);
+            label_SendTime.Location = new Point(0, 0);
             label_SendTime.Name = "label_SendTime";
             label_SendTime.Padding = new Padding(20, 26, 3, 0);
-            label_SendTime.Size = new Size(65, 37);
+            label_SendTime.Size = new Size(66, 37);
             label_SendTime.TabIndex = 3;
             label_SendTime.Text = "오후 10:30";
             label_SendTime.TextAlign = ContentAlignment.BottomRight;
+            // 
+            // panel1
+            // 
+            panel1.BackColor = Color.Transparent;
+            panel1.Controls.Add(label_SendTime);
+            panel1.Dock = DockStyle.Right;
+            panel1.Location = new Point(592, 5);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(66, 37);
+            panel1.TabIndex = 4;
+            // 
+            // panel2
+            // 
+            panel2.AutoSize = true;
+            panel2.Controls.Add(label_SendMessage);
+            panel2.Dock = DockStyle.Right;
+            panel2.Location = new Point(658, 5);
+            panel2.Name = "panel2";
+            panel2.Padding = new Padding(0, 0, 0, 5);
+            panel2.Size = new Size(107, 37);
+            panel2.TabIndex = 5;
             // 
             // SendMessageControl
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.Transparent;
-            Controls.Add(label_SendTime);
-            Controls.Add(label_SendMessage);
+            Controls.Add(panel1);
+            Controls.Add(panel2);
             Name = "SendMessageControl";
             Padding = new Padding(5);
             Size = new Size(770, 47);
+            panel1.ResumeLayout(false);
+            panel2.ResumeLayout(false);
+            panel2.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -79,5 +104,7 @@
         #endregion
         private Label label_SendMessage;
         private Label label_SendTime;
+        private Panel panel1;
+        private Panel panel2;
     }
 }

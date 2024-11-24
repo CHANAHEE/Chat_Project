@@ -21,6 +21,8 @@ namespace ClientProgram
             string FormattedTime = SendTime.ToString("tt h:mm", CultureInfo.CurrentCulture);
 
             this.label_SendTime.Text = FormattedTime.Replace("AM","오전").Replace("PM", "오후");
+
+            this.Height = this.label_SendMessage.Height + this.Padding.Bottom;
         }
     }
 }
