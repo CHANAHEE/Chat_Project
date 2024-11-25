@@ -74,6 +74,39 @@ namespace ClientProgram
             }
         }
 
+        public void OnServerConnectionResult(bool IsConnect)
+        {
+            if (this.button_Send.InvokeRequired)
+            {
+                this.button_Send.Invoke(new MethodInvoker(delegate ()
+                {
+                    this.richTextBox_Message.Enabled = IsConnect;
+                    this.button_Send.Enabled = IsConnect;
+                    if(IsConnect)
+                    {
+                        this.button_Send.Text = "전 송";
+                    }
+                    else
+                    {
+                        this.button_Send.Text = "서버 연결중";
+                    }    
+                }));
+            }
+            else
+            {
+                this.richTextBox_Message.Enabled = IsConnect;
+                this.button_Send.Enabled = IsConnect;
+                if (IsConnect)
+                {
+                    this.button_Send.Text = "전 송";
+                }
+                else
+                {
+                    this.button_Send.Text = "서버 연결중";
+                }
+            }
+        }
+
         private void richTextBox_Message_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Shift && e.KeyCode == Keys.Enter)

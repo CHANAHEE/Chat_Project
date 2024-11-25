@@ -70,6 +70,8 @@ namespace ClientProgram
 
             Init_Send_Receive();
 
+            mainForm.OnServerConnectionResult(true);
+
             Console.WriteLine("Server Connect Complete!");
         }
 
@@ -78,6 +80,8 @@ namespace ClientProgram
         {
             try
             {
+                mainForm.OnServerConnectionResult(false);
+
                 Console.WriteLine("Connect Server . . .");
 
                 Thread.Sleep(1000);
@@ -187,11 +191,13 @@ namespace ClientProgram
 
         private void ProcessReceive(SocketAsyncEventArgs e)
         {
-            if(IsCreate_SendArgs ==  false)
+            // SocketAsyncEventArgs 객체 초기화 Flag
+            if (IsCreate_SendArgs ==  false)
             {
                 return;
             }
 
+            // 서버와의 연결 여부 체크
             if (e.BytesTransferred > 0 && e.SocketError == SocketError.Success)
             {
                 string message = Encoding.UTF8.GetString(e.Buffer, 0, e.BytesTransferred);

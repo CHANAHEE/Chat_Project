@@ -38,8 +38,8 @@
             // tableLayoutPanel1
             // 
             tableLayoutPanel1.ColumnCount = 2;
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 90.625F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 9.375F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 88.625F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 11.375F));
             tableLayoutPanel1.Controls.Add(button_Send, 1, 0);
             tableLayoutPanel1.Controls.Add(richTextBox_Message, 0, 0);
             tableLayoutPanel1.Dock = DockStyle.Bottom;
@@ -55,20 +55,21 @@
             // 
             button_Send.Dock = DockStyle.Fill;
             button_Send.Enabled = false;
-            button_Send.Location = new Point(728, 3);
+            button_Send.Location = new Point(712, 3);
             button_Send.Name = "button_Send";
-            button_Send.Size = new Size(69, 38);
+            button_Send.Size = new Size(85, 38);
             button_Send.TabIndex = 0;
-            button_Send.Text = "전 송";
+            button_Send.Text = "서버 연결중";
             button_Send.UseVisualStyleBackColor = true;
             button_Send.Click += button_Send_Click;
             // 
             // richTextBox_Message
             // 
             richTextBox_Message.Dock = DockStyle.Fill;
+            richTextBox_Message.Enabled = false;
             richTextBox_Message.Location = new Point(3, 3);
             richTextBox_Message.Name = "richTextBox_Message";
-            richTextBox_Message.Size = new Size(719, 38);
+            richTextBox_Message.Size = new Size(703, 38);
             richTextBox_Message.TabIndex = 1;
             richTextBox_Message.Text = "";
             richTextBox_Message.KeyDown += richTextBox_Message_KeyDown;
