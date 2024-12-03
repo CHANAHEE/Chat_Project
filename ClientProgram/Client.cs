@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MessagePack;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -9,6 +10,21 @@ using System.Windows.Forms;
 
 namespace ClientProgram
 {
+    [MessagePackObject]
+    public class MessageData
+    {
+        [Key(0)]
+        public string Message = string.Empty;
+        [Key(1)]
+        public DateTime CreationTime = DateTime.Now;
+
+        public MessageData(string Message, DateTime Time) 
+        {
+            this.Message = Message;
+            this.CreationTime = Time;
+        }
+    }
+
     internal class Client
     {
         Socket clientSocket;
@@ -160,7 +176,9 @@ namespace ClientProgram
             }
 
             // 입력받은 메시지를 byte 배열로 변환
-            byte[] messageBuffer = Encoding.UTF8.GetBytes(message);
+            MessageData NewMessage = new MessageData(message, DateTime.Now);
+            byte[] messageBuffer = MessagePackSerializer.Serialize(NewMessage);
+            //byte[] messageBuffer = Encoding.UTF8.GetBytes(message);
             sendArgs.SetBuffer(messageBuffer, 0, messageBuffer.Length);
 
             // 비동기 데이터 전송 작업
@@ -186,7 +204,9 @@ namespace ClientProgram
                 return;
             }
 
-            Console.WriteLine($"Send Message : {Encoding.UTF8.GetString(e.Buffer, 0, e.BytesTransferred)}");
+            //Console.WriteLine($"Send Message : {Encoding.UTF8.GetString(e.Buffer, 0, e.BytesTransferred)}");
+            byte[] SendBuffer = e.Buffer.Take(e.BytesTransferred).ToArray();
+            Console.WriteLine($"Send Message : {MessagePackSerializer.Deserialize<MessageData>(SendBuffer).Message}");
         }
 
         private void ProcessReceive(SocketAsyncEventArgs e)
@@ -200,8 +220,10 @@ namespace ClientProgram
             // 서버와의 연결 여부 체크
             if (e.BytesTransferred > 0 && e.SocketError == SocketError.Success)
             {
-                string message = Encoding.UTF8.GetString(e.Buffer, 0, e.BytesTransferred);
-                mainForm.Update_ReceiveMessage(message);
+                //string message = Encoding.UTF8.GetString(e.Buffer, 0, e.BytesTransferred);
+                byte[] SendBuffer = e.Buffer.Take(e.BytesTransferred).ToArray();
+                MessageData RecvMessageData = MessagePackSerializer.Deserialize<MessageData>(SendBuffer);
+                mainForm.Update_ReceiveMessage(RecvMessageData.Message);
 
                 // 계속해서 데이터 수신
                 if (!clientSocket.ReceiveAsync(e))

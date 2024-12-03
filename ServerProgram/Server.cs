@@ -6,9 +6,25 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MessagePack;
 
 namespace ServerProgram
 {
+    [MessagePackObject]
+    public class MessageData
+    {
+        [Key(0)]
+        public string Message = string.Empty;
+        [Key(1)]
+        public DateTime CreationTime = DateTime.Now;
+
+        public MessageData(string Message, DateTime Time)
+        {
+            this.Message = Message;
+            this.CreationTime = Time;
+        }
+    }
+
     internal class Server
     {
         private int connectionCount;
@@ -145,11 +161,15 @@ namespace ServerProgram
             // 버퍼에 들어있는 데이터의 크기가 있는지와 Socket 의 연결여부를 체크
             if (e.BytesTransferred > 0 && e.SocketError == SocketError.Success)
             {
+                //string message = Encoding.UTF8.GetString(e.Buffer, 0, e.BytesTransferred);
+
                 // 버퍼에 들어있는 아스키코드 메시지를 UTF8 로 인코딩하여 string 으로 변환
-                string message = Encoding.UTF8.GetString(e.Buffer, 0, e.BytesTransferred);
+                byte[] RecvBuffer = e.Buffer.Take(e.BytesTransferred).ToArray();
+                MessageData RecvMessageData = MessagePackSerializer.Deserialize<MessageData>(RecvBuffer);
+                string Message = RecvMessageData.Message;
 
                 // 서버 UI 에 수신받은 클라이언트 메시지 추가
-                mainForm.Update_Message(DateTime.Now.ToString(), message);
+                mainForm.Update_Message(DateTime.Now.ToString(), Message);
 
                 // 비동기 데이터 송신 작업. 수신 받은 클라이언트 이외의 모든 클라이언트에게 데이터 전송
                 foreach(KeyValuePair<Socket,SocketAsyncEventArgs> Args in sendArgsCollection)
@@ -161,8 +181,8 @@ namespace ServerProgram
 
                     // 데이터 송신을 위한 버퍼 작업
                     byte[] SendMessage = new byte[1024];                    
-                    Buffer.BlockCopy(e.Buffer, 0, SendMessage, 0, e.BytesTransferred);
-                    Args.Value.SetBuffer(SendMessage, 0, e.BytesTransferred);
+                    Buffer.BlockCopy(RecvBuffer, 0, SendMessage, 0, RecvBuffer.Length);
+                    Args.Value.SetBuffer(SendMessage, 0, RecvBuffer.Length);
 
                     bool willRaiseEvent = ((Socket)Args.Value.UserToken).SendAsync(Args.Value);
                     if (!willRaiseEvent)

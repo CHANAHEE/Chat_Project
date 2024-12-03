@@ -49,3 +49,8 @@ D:\Project\ChatProject\ServerProgram\obj\x64\Debug\net8.0-windows\refint\ServerP
 D:\Project\ChatProject\ServerProgram\obj\x64\Debug\net8.0-windows\ServerProgram.pdb
 D:\Project\ChatProject\ServerProgram\obj\x64\Debug\net8.0-windows\ServerProgram.genruntimeconfig.cache
 D:\Project\ChatProject\ServerProgram\obj\x64\Debug\net8.0-windows\ref\ServerProgram.dll
+D:\Private\ChatProgram\ChatProgram\ServerProgram\bin\x64\Debug\net8.0-windows\MessagePack.dll
+D:\Private\ChatProgram\ChatProgram\ServerProgram\bin\x64\Debug\net8.0-windows\MessagePack.Annotations.dll
+D:\Private\ChatProgram\ChatProgram\ServerProgram\bin\x64\Debug\net8.0-windows\Microsoft.NET.StringTools.dll
+D:\Private\ChatProgram\ChatProgram\ServerProgram\obj\x64\Debug\net8.0-windows\ServerProgram.csproj.AssemblyReference.cache
+D:\Private\ChatProgram\ChatProgram\ServerProgram\obj\x64\Debug\net8.0-windows\ServerProgram.csproj.CopyComplete

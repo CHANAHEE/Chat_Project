@@ -9,4 +9,8 @@
     <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="MessagePack" Version="2.5.192" />
+  </ItemGroup>
+
 </Project>

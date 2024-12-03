@@ -3,7 +3,6 @@ D:\Private\ChatProgram\ChatProgram\ClientProgram\bin\Debug\net8.0-windows\Client
 D:\Private\ChatProgram\ChatProgram\ClientProgram\bin\Debug\net8.0-windows\ClientProgram.runtimeconfig.json
 D:\Private\ChatProgram\ChatProgram\ClientProgram\bin\Debug\net8.0-windows\ClientProgram.dll
 D:\Private\ChatProgram\ChatProgram\ClientProgram\bin\Debug\net8.0-windows\ClientProgram.pdb
-D:\Private\ChatProgram\ChatProgram\ClientProgram\obj\Debug\net8.0-windows\ClientProgram.Form1.resources
 D:\Private\ChatProgram\ChatProgram\ClientProgram\obj\Debug\net8.0-windows\ClientProgram.csproj.GenerateResource.cache
 D:\Private\ChatProgram\ChatProgram\ClientProgram\obj\Debug\net8.0-windows\ClientProgram.GeneratedMSBuildEditorConfig.editorconfig
 D:\Private\ChatProgram\ChatProgram\ClientProgram\obj\Debug\net8.0-windows\ClientProgram.AssemblyInfoInputs.cache
@@ -15,4 +14,11 @@ D:\Private\ChatProgram\ChatProgram\ClientProgram\obj\Debug\net8.0-windows\refint
 D:\Private\ChatProgram\ChatProgram\ClientProgram\obj\Debug\net8.0-windows\ClientProgram.pdb
 D:\Private\ChatProgram\ChatProgram\ClientProgram\obj\Debug\net8.0-windows\ClientProgram.genruntimeconfig.cache
 D:\Private\ChatProgram\ChatProgram\ClientProgram\obj\Debug\net8.0-windows\ref\ClientProgram.dll
-D:\Private\ChatProgram\ChatProgram\ClientProgram\obj\Debug\net8.0-windows\ClientProgram.MessageControl.resources
+D:\Private\ChatProgram\ChatProgram\ClientProgram\bin\Debug\net8.0-windows\MessagePack.dll
+D:\Private\ChatProgram\ChatProgram\ClientProgram\bin\Debug\net8.0-windows\MessagePack.Annotations.dll
+D:\Private\ChatProgram\ChatProgram\ClientProgram\bin\Debug\net8.0-windows\Microsoft.NET.StringTools.dll
+D:\Private\ChatProgram\ChatProgram\ClientProgram\obj\Debug\net8.0-windows\ClientProgram.csproj.AssemblyReference.cache
+D:\Private\ChatProgram\ChatProgram\ClientProgram\obj\Debug\net8.0-windows\ClientProgram.MainForm.resources
+D:\Private\ChatProgram\ChatProgram\ClientProgram\obj\Debug\net8.0-windows\ClientProgram.ReceiveMessageControl.resources
+D:\Private\ChatProgram\ChatProgram\ClientProgram\obj\Debug\net8.0-windows\ClientProgram.SendMessageControl.resources
+D:\Private\ChatProgram\ChatProgram\ClientProgram\obj\Debug\net8.0-windows\ClientProgram.csproj.CopyComplete

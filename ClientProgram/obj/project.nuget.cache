@@ -1,8 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "0wrYQ52J/EZbKNkILpU3/uXOSg4j3932XqJfeOMgub6v48S/1dKSLZTfAvDkK+BSYpJqPHvmy4txJkYdXVG4LQ==",
+  "dgSpecHash": "+Vf2QSM3PZG2G+Y7z2FGmUeHFH51IhMVqIuTn9EMl2GkZDCVbBv/66cbo6O9PDlZB0sM1C46oRAS27Volt2dQw==",
   "success": true,
   "projectFilePath": "D:\\Private\\ChatProgram\\ChatProgram\\ClientProgram\\ClientProgram.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\csg\\.nuget\\packages\\messagepack\\2.5.192\\messagepack.2.5.192.nupkg.sha512",
+    "C:\\Users\\csg\\.nuget\\packages\\messagepack.annotations\\2.5.192\\messagepack.annotations.2.5.192.nupkg.sha512",
+    "C:\\Users\\csg\\.nuget\\packages\\microsoft.net.stringtools\\17.6.3\\microsoft.net.stringtools.17.6.3.nupkg.sha512"
+  ],
   "logs": []
 }
