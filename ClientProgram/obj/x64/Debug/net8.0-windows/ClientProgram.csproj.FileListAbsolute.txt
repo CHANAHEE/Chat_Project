@@ -21,7 +21,6 @@ D:\Project\ChatProject\ClientProgram\bin\x64\Debug\net8.0-windows\ClientProgram.
 D:\Project\ChatProject\ClientProgram\bin\x64\Debug\net8.0-windows\ClientProgram.dll
 D:\Project\ChatProject\ClientProgram\bin\x64\Debug\net8.0-windows\ClientProgram.pdb
 D:\Project\ChatProject\ClientProgram\obj\x64\Debug\net8.0-windows\ClientProgram.MainForm.resources
-D:\Project\ChatProject\ClientProgram\obj\x64\Debug\net8.0-windows\ClientProgram.MessageControl.resources
 D:\Project\ChatProject\ClientProgram\obj\x64\Debug\net8.0-windows\ClientProgram.csproj.GenerateResource.cache
 D:\Project\ChatProject\ClientProgram\obj\x64\Debug\net8.0-windows\ClientProgram.GeneratedMSBuildEditorConfig.editorconfig
 D:\Project\ChatProject\ClientProgram\obj\x64\Debug\net8.0-windows\ClientProgram.AssemblyInfoInputs.cache
@@ -40,3 +39,10 @@ D:\Private\ChatProgram\ChatProgram\ClientProgram\bin\x64\Debug\net8.0-windows\Me
 D:\Private\ChatProgram\ChatProgram\ClientProgram\bin\x64\Debug\net8.0-windows\Microsoft.NET.StringTools.dll
 D:\Private\ChatProgram\ChatProgram\ClientProgram\obj\x64\Debug\net8.0-windows\ClientProgram.csproj.AssemblyReference.cache
 D:\Private\ChatProgram\ChatProgram\ClientProgram\obj\x64\Debug\net8.0-windows\ClientProgram.csproj.CopyComplete
+D:\Project\ChatProject\ClientProgram\bin\x64\Debug\net8.0-windows\MessagePack.dll
+D:\Project\ChatProject\ClientProgram\bin\x64\Debug\net8.0-windows\MessagePack.Annotations.dll
+D:\Project\ChatProject\ClientProgram\bin\x64\Debug\net8.0-windows\Microsoft.NET.StringTools.dll
+D:\Project\ChatProject\ClientProgram\obj\x64\Debug\net8.0-windows\ClientProgram.csproj.AssemblyReference.cache
+D:\Project\ChatProject\ClientProgram\obj\x64\Debug\net8.0-windows\ClientProgram.ReceiveMessageControl.resources
+D:\Project\ChatProject\ClientProgram\obj\x64\Debug\net8.0-windows\ClientProgram.SendMessageControl.resources
+D:\Project\ChatProject\ClientProgram\obj\x64\Debug\net8.0-windows\ClientPr.E374F509.Up2Date

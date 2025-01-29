@@ -54,3 +54,8 @@ D:\Private\ChatProgram\ChatProgram\ServerProgram\bin\x64\Debug\net8.0-windows\Me
 D:\Private\ChatProgram\ChatProgram\ServerProgram\bin\x64\Debug\net8.0-windows\Microsoft.NET.StringTools.dll
 D:\Private\ChatProgram\ChatProgram\ServerProgram\obj\x64\Debug\net8.0-windows\ServerProgram.csproj.AssemblyReference.cache
 D:\Private\ChatProgram\ChatProgram\ServerProgram\obj\x64\Debug\net8.0-windows\ServerProgram.csproj.CopyComplete
+D:\Project\ChatProject\ServerProgram\bin\x64\Debug\net8.0-windows\MessagePack.dll
+D:\Project\ChatProject\ServerProgram\bin\x64\Debug\net8.0-windows\MessagePack.Annotations.dll
+D:\Project\ChatProject\ServerProgram\bin\x64\Debug\net8.0-windows\Microsoft.NET.StringTools.dll
+D:\Project\ChatProject\ServerProgram\obj\x64\Debug\net8.0-windows\ServerProgram.csproj.AssemblyReference.cache
+D:\Project\ChatProject\ServerProgram\obj\x64\Debug\net8.0-windows\ServerPr.DBB55035.Up2Date

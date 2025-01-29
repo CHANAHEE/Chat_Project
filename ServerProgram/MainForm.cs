@@ -73,7 +73,7 @@ namespace ServerProgram
                 IsStartServer = true;
 
                 Create_Server();
-                IPEndPoint EndPoint = new IPEndPoint(IPAddress.Any, 5000);
+                IPEndPoint EndPoint = new IPEndPoint(IPAddress.Any, 5200);
                 server.Start(EndPoint);
             }            
         }

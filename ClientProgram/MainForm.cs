@@ -128,8 +128,12 @@ namespace ClientProgram
             // 클라이언트 초기화
             client = new Client();
 
+            // 서버 외부 IP
+            IPAddress ServerIP = IPAddress.Parse("211.195.127.130");
+            int ServerPort = 5200;
+
             // 서버 연결
-            IPEndPoint EndPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 5000);
+            IPEndPoint EndPoint = new IPEndPoint(ServerIP, ServerPort);
             client.Start(EndPoint, this);
         }
 
